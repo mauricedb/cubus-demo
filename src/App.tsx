@@ -1,7 +1,8 @@
 import * as React from 'react';
 import './App.css';
 
-import SimpleGrid from './components/SimpleGrid';
+// import SimpleGrid from './components/SimpleGrid';
+import FastGrid from './components/FastGrid';
 
 const  data = require('./stocks.json');
 
@@ -16,7 +17,8 @@ class App extends React.Component<{}, {count: number}>{
     return (
       <div className="App" onScroll={this.reportScrollEvent}>
       <button onClick={() => this.setState({count : this.state.count + 1})}>Click me</button>
-        <SimpleGrid data={data} />
+        {/* <SimpleGrid data={data} /> */}
+        <FastGrid data={data} />
       </div>
     );
   }

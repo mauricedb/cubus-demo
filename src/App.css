@@ -3,3 +3,13 @@
   height: 70vh;
   width: 80vw;
 }
+
+.header {
+  font-weight: bold;
+}
+
+.cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
