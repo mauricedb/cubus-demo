@@ -1,0 +1,16 @@
+.company{
+    display: inline-block;
+    width: 10em;
+    border: solid 1px red;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.industry {
+    display: inline-block;
+    width: 400px;
+    vertical-align: top;
+    border: solid 1px green;
+}

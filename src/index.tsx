@@ -9,3 +9,9 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
+
+
+
+const style = document.createElement('style')
+style.innerHTML = `.row { height: ${new Date().getSeconds()}px; }`
+document.head.appendChild(style);
