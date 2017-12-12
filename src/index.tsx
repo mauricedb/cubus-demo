@@ -12,6 +12,6 @@ registerServiceWorker();
 
 
 
-const style = document.createElement('style')
-style.innerHTML = `.row { height: ${new Date().getSeconds()}px; }`
-document.head.appendChild(style);
+// const style = document.createElement('style')
+// style.innerHTML = `.row { height: ${new Date().getSeconds()}px; }`
+// document.head.appendChild(style);
