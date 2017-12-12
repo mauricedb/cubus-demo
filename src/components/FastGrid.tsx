@@ -2,26 +2,65 @@ import * as React from "react";
 
 import { MultiGrid, GridCellProps } from "react-virtualized";
 
-interface SimpleGridProps {
+interface FastGridProps {
   data: any[];
 }
 
-class FastGrid extends React.PureComponent<SimpleGridProps, {}> {
+interface FastGridState {
+  columnWidths: number[];
+}
+
+class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
+  screenX = 0;
+  grid: MultiGrid | null;
+
+  state = {
+    columnWidths: [50, 50, 300, 300, 300]
+  };
+  onSplitterDragStart = (e: any) => {
+    this.screenX = e.screenX;
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  onSplitterDragEnd = (e: any) => {
+    const delta = e.screenX - this.screenX;
+    const columnWidths = [...this.state.columnWidths];
+    const columnNr = +e.target.dataset["column"];
+    columnWidths[columnNr] += delta;
+    this.setState({ columnWidths });
+    if (this.grid) {
+      this.grid.invalidateCellSizeAfterRender();
+    }
+  };
+
   cellRenderer = (e: GridCellProps) => {
     // console.log(e.parent.props.scrollTop);
 
     if (e.rowIndex === 0) {
       return (
-        <div className="header" key={e.key} style={e.style}>
+        <div
+          className="header"
+          key={e.key}
+          style={e.style}
+          onDragOver={(e: any) => e.preventDefault()}
+        >
           {e.columnIndex <= 1
             ? "Row"
             : e.columnIndex === 2 ? "Company" : "Industry"}
-            <span className="splitter" onDragEnd={e => console.log(e)}>&nbsp;&nbsp;|&nbsp;&nbsp; </span>
+          <span
+            className="splitter"
+            draggable
+            onDragStart={this.onSplitterDragStart}
+            onDragEnd={this.onSplitterDragEnd}
+            data-column={e.columnIndex}
+          >
+            |
+          </span>
         </div>
       );
     }
 
-    const stock = this.props.data[e.rowIndex + 1];
+    const stock = this.props.data[e.rowIndex - 1];
     if (e.columnIndex === 0) {
       if (e.rowIndex % 10 !== 0) {
         return <div key={e.key} style={e.style} />;
@@ -50,17 +89,18 @@ class FastGrid extends React.PureComponent<SimpleGridProps, {}> {
   };
 
   onScroll = (e: any) => {
-    console.log(e);
+    // console.log(e);
   };
   render() {
     return (
       <div>
         <MultiGrid
+          ref={grid => (this.grid = grid)}
           cellRenderer={this.cellRenderer}
           height={500}
           width={900}
           rowHeight={20}
-          columnWidth={({ index }) => (index === 0 ? 50 : 300)}
+          columnWidth={({ index }) => this.state.columnWidths[index]}
           rowCount={this.props.data.length + 1}
           columnCount={5}
           fixedRowCount={1}
