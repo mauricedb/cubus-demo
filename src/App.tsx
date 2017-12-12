@@ -11,7 +11,7 @@ class App extends React.Component<{}, {count: number}>{
     count: 0
   }
   reportScrollEvent = (e: any) => {
-    console.log(e)
+    // console.log(e)
   }
   render() {
     return (

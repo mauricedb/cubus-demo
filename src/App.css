@@ -13,3 +13,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.splitter {
+  position: absolute;
+  right: 0;
+  cursor: ew-resize;
+  
+}
