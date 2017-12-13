@@ -20,3 +20,9 @@
   cursor: ew-resize;
   padding: 0 3px;
 }
+
+
+.selected {
+  background-color: blue;
+  color: white;
+}
