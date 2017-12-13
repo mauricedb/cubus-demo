@@ -1,0 +1,39 @@
+https://www.json-generator.com/#
+
+[
+  "{{repeat(100)}}",
+  {
+    id: "{{objectId()}}",
+    balance: "{{floating(1000, 4000, 2, \"$0,0.00\")}}",
+    name: "{{firstName()}} {{surname()}}",
+    company: "{{company().toUpperCase()}}",
+    friends: [
+      "{{repeat(0, 100)}}",
+      {
+        id: "{{objectId()}}",
+        balance: "{{floating(1000, 4000, 2, \"$0,0.00\")}}",
+        name: "{{firstName()}} {{surname()}}",
+        company: "{{company().toUpperCase()}}",
+        friends: [
+          "{{repeat(0, 10)}}",
+          {
+            id: "{{objectId()}}",
+            balance: "{{floating(1000, 4000, 2, \"$0,0.00\")}}",
+            name: "{{firstName()}} {{surname()}}",
+            company: "{{company().toUpperCase()}}",
+            friends: [
+              "{{repeat(0, 10)}}",
+              {
+                id: "{{objectId()}}",
+                balance: "{{floating(1000, 4000, 2, \"$0,0.00\")}}",
+                name: "{{firstName()}} {{surname()}}",
+                company: "{{company().toUpperCase()}}",
+                friends: []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
