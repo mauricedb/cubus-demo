@@ -34,6 +34,7 @@ class Tree extends React.Component<TreeProps, TreeState> {
   };
 
   getFlatTree(tree: TreeData[], indentation = 0) {
+    // console.count('getFlatTree')
     const data: TreeData[] = [];
     tree.forEach(item => {
       item.indentation = indentation;
@@ -90,7 +91,7 @@ class Tree extends React.Component<TreeProps, TreeState> {
   };
 
   rowGetter = (e: Index) => {
-    const flatTree = this.getFlatTree(this.props.data);
+    const flatTree = this.state.flatTree;
     return flatTree[e.index];
   };
   componentWillMount() {
@@ -99,9 +100,41 @@ class Tree extends React.Component<TreeProps, TreeState> {
   componentWillReceiveProps(newProps: TreeProps) {
     this.setState({ flatTree: this.getFlatTree(newProps.data) });
   }
+
+  expandAll = () => {
+    const expandAllFn = (data: TreeData[]) => {
+      data.forEach(item => {
+        if (item.friends.length) {
+          item.expanded = true;
+          expandAllFn(item.friends);
+        }
+      });
+    };
+
+    expandAllFn(this.props.data);
+    this.setState({ flatTree: this.getFlatTree(this.props.data) });
+  };
+
+  colapseAll = () => {
+    const colapseAllFn = (data: TreeData[]) => {
+      data.forEach(item => {
+        if (item.friends.length) {
+          item.expanded = false;
+          colapseAllFn(item.friends);
+        }
+      });
+    };
+
+    colapseAllFn(this.props.data);
+    this.setState({ flatTree: this.getFlatTree(this.props.data) });
+  };
+
   render() {
+    console.log(this.state.flatTree.length);
     return (
       <div>
+        <button onClick={this.expandAll}>Expand all</button>
+        <button onClick={this.colapseAll}>Collapse all</button>
         <Table
           height={500}
           width={800}
