@@ -3,7 +3,10 @@ import * as React from "react";
 import { MultiGrid, GridCellProps } from "react-virtualized";
 
 interface FastGridProps {
-  data: any[];
+  data: {
+    Company: string;
+    Industry: string;
+  }[];
 }
 
 interface FastGridState {
