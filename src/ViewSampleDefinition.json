@@ -1,0 +1,539 @@
+{
+   "dimensions": {
+      "dimension": [
+         {
+            "name": "Account",
+            "hierarchyName": "Account",
+            "numberOfMembers": "13",
+            "dimensionType": "Normal",
+            "levels": {
+               "level": [
+                  "level000",
+                  "level001",
+                  "level002",
+                  "level003"
+               ]
+            },
+            "namedSets": {
+               "namedSet": [
+                  "All Members"
+               ]
+            },
+            "rootMembers": {
+               "rootMember": [
+                  "Profit",
+                  "Ratios"
+               ]
+            },
+            "referencedMembers": {
+               "member": [
+                  {
+                     "name": "Account",
+                     "member": [
+                        {
+                           "name": "Ratios",
+                           "member": [
+                              {
+                                 "name": "Profit per Ounce",
+                                 "_id": "10"
+                              },
+                              {
+                                 "name": "Profit %",
+                                 "_id": "11"
+                              },
+                              {
+                                 "name": "Margin %",
+                                 "_id": "12"
+                              }
+                           ],
+                           "_id": "9"
+                        },
+                        {
+                           "name": "Profit",
+                           "member": [
+                              {
+                                 "name": "Total Expenses",
+                                 "member": [
+                                    {
+                                       "name": "Payroll",
+                                       "_id": "8"
+                                    },
+                                    {
+                                       "name": "Misc",
+                                       "_id": "7"
+                                    },
+                                    {
+                                       "name": "Marketing",
+                                       "_id": "6"
+                                    }
+                                 ],
+                                 "_id": "5"
+                              },
+                              {
+                                 "name": "Margin",
+                                 "member": [
+                                    {
+                                       "name": "Sales",
+                                       "_id": "3"
+                                    },
+                                    {
+                                       "name": "COGS",
+                                       "_id": "4"
+                                    }
+                                 ],
+                                 "_id": "2"
+                              }
+                           ],
+                           "_id": "1"
+                        }
+                     ],
+                     "_id": "0"
+                  }
+               ]
+            },
+            "_id": "1"
+         },
+         {
+            "name": "Time",
+            "hierarchyName": "Time",
+            "numberOfMembers": "17",
+            "dimensionType": "Normal",
+            "levels": {
+               "level": [
+                  "level000",
+                  "level001",
+                  "level002"
+               ]
+            },
+            "namedSets": {
+               "namedSet": [
+                  "All Members"
+               ]
+            },
+            "rootMembers": {
+               "rootMember": [
+                  "Qtr1",
+                  "Qtr2",
+                  "Qtr3",
+                  "Qtr4"
+               ]
+            },
+            "referencedMembers": {
+               "member": [
+                  {
+                     "name": "Time",
+                     "member": [
+                        {
+                           "name": "Qtr4",
+                           "member": [
+                              {
+                                 "name": "M12",
+                                 "_id": "29"
+                              },
+                              {
+                                 "name": "M11",
+                                 "_id": "28"
+                              },
+                              {
+                                 "name": "M10",
+                                 "_id": "27"
+                              }
+                           ],
+                           "_id": "26"
+                        },
+                        {
+                           "name": "Qtr3",
+                           "member": [
+                              {
+                                 "name": "M09",
+                                 "_id": "25"
+                              },
+                              {
+                                 "name": "M08",
+                                 "_id": "24"
+                              },
+                              {
+                                 "name": "M07",
+                                 "_id": "23"
+                              }
+                           ],
+                           "_id": "22"
+                        },
+                        {
+                           "name": "Qtr2",
+                           "member": [
+                              {
+                                 "name": "M06",
+                                 "_id": "21"
+                              },
+                              {
+                                 "name": "M05",
+                                 "_id": "20"
+                              },
+                              {
+                                 "name": "M04",
+                                 "_id": "19"
+                              }
+                           ],
+                           "_id": "15"
+                        },
+                        {
+                           "name": "Qtr1",
+                           "member": [
+                              {
+                                 "name": "M03",
+                                 "_id": "18"
+                              },
+                              {
+                                 "name": "M02",
+                                 "_id": "17"
+                              },
+                              {
+                                 "name": "M01",
+                                 "_id": "16"
+                              }
+                           ],
+                           "_id": "14"
+                        }
+                     ],
+                     "_id": "13"
+                  }
+               ]
+            },
+            "_id": "0"
+         },
+         {
+            "name": "Total Year",
+            "hierarchyName": "Year",
+            "numberOfMembers": "4",
+            "dimensionType": "Normal",
+            "levels": {
+               "level": [
+                  "level000",
+                  "level001"
+               ]
+            },
+            "namedSets": {
+               "namedSet": [
+                  "All Members"
+               ]
+            },
+            "rootMembers": {
+               "rootMember": [
+                  "Year02",
+                  "Year03",
+                  "Year04"
+               ]
+            },
+            "referencedMembers": {
+               "member": [
+                  {
+                     "name": "Total Year",
+                     "member": [
+                        {
+                           "name": "Year04",
+                           "_id": "31"
+                        },
+                        {
+                           "name": "Year03",
+                           "_id": "33"
+                        },
+                        {
+                           "name": "Year02",
+                           "_id": "32"
+                        }
+                     ],
+                     "_id": "30"
+                  }
+               ]
+            },
+            "_id": "12"
+         },
+         {
+            "name": "Scenario",
+            "hierarchyName": "Scenario",
+            "numberOfMembers": "5",
+            "dimensionType": "Normal",
+            "levels": {
+               "level": [
+                  "level000"
+               ]
+            },
+            "namedSets": {
+               "namedSet": [
+                  "All Members"
+               ]
+            },
+            "rootMembers": {
+               "rootMember": [
+                  "Actual",
+                  "Budget",
+                  "Variance",
+                  "Variance %"
+               ]
+            },
+            "referencedMembers": {
+               "member": [
+                  {
+                     "name": "Scenario",
+                     "member": [
+                        {
+                           "name": "Variance %",
+                           "_id": "38"
+                        },
+                        {
+                           "name": "Variance",
+                           "_id": "37"
+                        },
+                        {
+                           "name": "Budget",
+                           "_id": "36"
+                        },
+                        {
+                           "name": "Actual",
+                           "_id": "35"
+                        }
+                     ],
+                     "_id": "34"
+                  }
+               ]
+            },
+            "_id": "4"
+         },
+         {
+            "name": "Product",
+            "hierarchyName": "Product",
+            "numberOfMembers": "22",
+            "dimensionType": "Normal",
+            "levels": {
+               "level": [
+                  "level000",
+                  "level001",
+                  "level002"
+               ]
+            },
+            "namedSets": {
+               "namedSet": [
+                  "All Members"
+               ]
+            },
+            "rootMembers": {
+               "rootMember": [
+                  "100",
+                  "200",
+                  "300",
+                  "400",
+                  "Diet"
+               ]
+            },
+            "referencedMembers": {
+               "member": [
+                  {
+                     "name": "Product",
+                     "member": [
+                        {
+                           "name": "Diet",
+                           "_id": "44"
+                        },
+                        {
+                           "name": "400",
+                           "_id": "43"
+                        },
+                        {
+                           "name": "300",
+                           "_id": "42"
+                        },
+                        {
+                           "name": "200",
+                           "_id": "41"
+                        },
+                        {
+                           "name": "100",
+                           "_id": "40"
+                        }
+                     ],
+                     "_id": "39"
+                  }
+               ]
+            },
+            "_id": "2"
+         },
+         {
+            "name": "Market",
+            "hierarchyName": "Market",
+            "numberOfMembers": "25",
+            "dimensionType": "Normal",
+            "levels": {
+               "level": [
+                  "level000",
+                  "level001",
+                  "level002"
+               ]
+            },
+            "namedSets": {
+               "namedSet": [
+                  "All Members",
+                  "Default",
+                  "Major Market"
+               ]
+            },
+            "rootMembers": {
+               "rootMember": [
+                  "RegGrp01",
+                  "RegGrp02",
+                  "RegGrp03",
+                  "RegGrp04"
+               ]
+            },
+            "referencedMembers": {
+               "member": [
+                  {
+                     "name": "Market",
+                     "member": [
+                        {
+                           "name": "RegGrp04",
+                           "member": [
+                              {
+                                 "name": "Region20",
+                                 "_id": "69"
+                              },
+                              {
+                                 "name": "Region19",
+                                 "_id": "68"
+                              },
+                              {
+                                 "name": "Region18",
+                                 "_id": "67"
+                              },
+                              {
+                                 "name": "Region17",
+                                 "_id": "66"
+                              },
+                              {
+                                 "name": "Region16",
+                                 "_id": "65"
+                              },
+                              {
+                                 "name": "Region15",
+                                 "_id": "64"
+                              }
+                           ],
+                           "_id": "63"
+                        },
+                        {
+                           "name": "RegGrp03",
+                           "member": [
+                              {
+                                 "name": "Region14",
+                                 "_id": "62"
+                              },
+                              {
+                                 "name": "Region13",
+                                 "_id": "61"
+                              },
+                              {
+                                 "name": "Region12",
+                                 "_id": "60"
+                              },
+                              {
+                                 "name": "Region11",
+                                 "_id": "59"
+                              }
+                           ],
+                           "_id": "58"
+                        },
+                        {
+                           "name": "RegGrp02",
+                           "member": [
+                              {
+                                 "name": "Region10",
+                                 "_id": "57"
+                              },
+                              {
+                                 "name": "Region09",
+                                 "_id": "56"
+                              },
+                              {
+                                 "name": "Region08",
+                                 "_id": "55"
+                              },
+                              {
+                                 "name": "Region07",
+                                 "_id": "54"
+                              },
+                              {
+                                 "name": "Region06",
+                                 "_id": "53"
+                              }
+                           ],
+                           "_id": "52"
+                        },
+                        {
+                           "name": "RegGrp01",
+                           "member": [
+                              {
+                                 "name": "Region05",
+                                 "_id": "51"
+                              },
+                              {
+                                 "name": "Region04",
+                                 "_id": "50"
+                              },
+                              {
+                                 "name": "Region03",
+                                 "_id": "49"
+                              },
+                              {
+                                 "name": "Region02",
+                                 "_id": "48"
+                              },
+                              {
+                                 "name": "Region01",
+                                 "_id": "47"
+                              }
+                           ],
+                           "_id": "46"
+                        }
+                     ],
+                     "_id": "45"
+                  }
+               ]
+            },
+            "_id": "3"
+         },
+         {
+            "name": "Time Series",
+            "hierarchyName": "Time Series",
+            "numberOfMembers": "4",
+            "dimensionType": "Normal",
+            "levels": {
+               "level": [
+                  "level000"
+               ]
+            },
+            "rootMembers": {
+               "rootMember": [
+                  "Time",
+                  "H-T-D",
+                  "Q-T-D"
+               ]
+            },
+            "referencedMembers": {
+               "member": [
+                  {
+                     "name": "Time Series",
+                     "member": [
+                        {
+                           "name": "Time",
+                           "_id": "71"
+                        }
+                     ],
+                     "_id": "70"
+                  }
+               ]
+            },
+            "_id": "11"
+         }
+      ]
+   }
+}

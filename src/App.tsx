@@ -3,19 +3,21 @@ import "./App.css";
 
 // import SimpleGrid from './components/SimpleGrid';
 // import FastGrid from './components/FastGrid';
-import Tree from "./components/Tree";
+import NumberGrid from "./components/NumberGrid";
+// import Tree from './components/Tree';
 
 // const  data = require('./stocks.json');
 // const treeData = require('./tree.json');
 
-class App extends React.Component<{}, { count: number; treeData: any[] }> {
-  state = {
-    count: 0,
-    treeData: []
-  };
+class App extends React.Component<{}, {  }> {
+  // state = {
+  //   count: 0,
+  //   treeData: []
+  // };
   reportScrollEvent = (e: any) => {
     // console.log(e)
-  };
+  }
+  
   componentDidMount() {
     fetch("/tree.json")
       .then(rsp => rsp.json())
@@ -24,12 +26,13 @@ class App extends React.Component<{}, { count: number; treeData: any[] }> {
   render() {
     return (
       <div className="App" onScroll={this.reportScrollEvent}>
-        <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+        {/* <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Click me
-        </button>
+        </button> */}
         {/* <SimpleGrid data={data} /> */}
         {/* <FastGrid data={data} /> */}
-        <Tree data={this.state.treeData} />
+        <NumberGrid />
+        {/* <Tree data={this.state.treeData} /> */}
       </div>
     );
   }
