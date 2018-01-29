@@ -2,19 +2,18 @@ import * as React from "react";
 
 import {
   ConnectDragSource,
-  // DragDropContext,
   DragSource,
   DragSourceSpec,
-  // DragSourceCollector,
+  DragSourceCollector,
   DragSourceConnector,
   DragSourceMonitor,
   // DragElementWrapper,
   ConnectDropTarget,
-  DropTarget
-  // DropTargetConnector,
-  // DropTargetMonitor,
+  DropTarget,
+  DropTargetConnector,
+  DropTargetMonitor,
   // ClientOffset,
-  // DropTargetSpec
+  DropTargetSpec
 } from "react-dnd";
 
 // import * as ReactDnD from "react-dnd";
@@ -33,35 +32,6 @@ interface GridHeaderProps {
 
 interface GridHeaderState {}
 
-let nodeSourceSpec: DragSourceSpec<GridHeaderProps> = {
-  beginDrag: (props: GridHeaderProps) => ({
-    caption: props.caption,
-    swapMember: props.swapMember
-  }),
-
-  endDrag(props, monitor) {
-    const item = monitor.getItem();
-    const dropResult = monitor.getDropResult();
-
-    if (dropResult) {
-      console.log(`You dropped ${item.caption} into ${dropResult.caption}!`); // eslint-disable-line no-alert
-      item.swapMember(item.caption, dropResult.caption);
-    }
-  }
-};
-
-// Collect: Put drag state into props
-let nodeSourceCollector = (
-  connect: DragSourceConnector,
-  monitor: DragSourceMonitor
-) => {
-  return {
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
-  };
-};
-
-// @DragSource("new-node", nodeSourceSpec, nodeSourceCollector)
 class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
   render() {
     const { caption, style } = this.props;
@@ -85,15 +55,48 @@ class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
   }
 }
 
-const boxTarget = {
-  drop(props) {
+let sourceSpec: DragSourceSpec<GridHeaderProps> = {
+  beginDrag: (props: GridHeaderProps) => ({
+    caption: props.caption,
+    swapMember: props.swapMember
+  }),
+
+  endDrag(props: GridHeaderProps, monitor: DragSourceMonitor) {
+    const item = monitor.getItem();
+    const dropResult = monitor.getDropResult();
+
+    if (dropResult) {
+      item.swapMember(item.caption, dropResult.caption);
+    }
+  }
+};
+
+// Collect: Put drag state into props
+let sourceCollector: DragSourceCollector = (
+  connect: DragSourceConnector,
+  monitor: DragSourceMonitor
+) => {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  };
+};
+
+const targetSpec: DropTargetSpec = {
+  drop(props: GridHeaderProps) {
     return { caption: props.caption };
   }
 };
 
-export default DropTarget("new-node", boxTarget, (connect, monitor) => ({
+const targetCollector: DropTargetConnector = (
+  connect: DropTargetConnector,
+  monitor: DropTargetMonitor
+) => ({
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver(),
   canDrop: monitor.canDrop()
-}))(DragSource("new-node", nodeSourceSpec, nodeSourceCollector)(GridHeader));
-// export default  GridHeader;
+});
+
+export default DropTarget("header-node", targetSpec, targetCollector)(
+  DragSource("header-node", sourceSpec, sourceCollector)(GridHeader)
+);

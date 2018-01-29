@@ -1,3 +1,6 @@
+.App {
+}
+
 .grid {
   overflow: scroll;
   height: 70vh;
@@ -7,6 +10,14 @@
 .header {
   font-weight: bold;
   text-align: right;
+}
+
+.header[draggable] {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -o-user-select: none;
 }
 
 .is-dragging {

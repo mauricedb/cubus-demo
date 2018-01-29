@@ -1,19 +1,16 @@
 import * as React from "react";
-
 import { MultiGrid, GridCellProps } from "react-virtualized";
-
 import GridHeader from "./GridHeader";
-
 const viewSampleDefinition = require("./../ViewSampleDefinition.json");
 
-const columns: string[] = [];
-const rows: string[] = [];
+const initialColumns: string[] = [];
+const initialRows: string[] = [];
 
 viewSampleDefinition.dimensions.dimension[0].referencedMembers.member[0].member
   .map((m: any) => m.member)
   .forEach((element: any) => {
     element.forEach((el: any) => {
-      rows.push(el.name);
+      initialRows.push(el.name);
     });
   });
 
@@ -21,45 +18,38 @@ viewSampleDefinition.dimensions.dimension[1].referencedMembers.member[0].member
   .map((m: any) => m.member)
   .forEach((element: any) => {
     element.forEach((el: any) => {
-      columns.push(el.name);
+      initialColumns.push(el.name);
     });
   });
 
-/* New node from the node well */
-// export interface NodeSourceProps {
-//   isDragging : boolean;
-//   connectDragSource: ConnectDragSource;
-// }
-// export interface NodeSourceState {
-// }
-interface FastGridProps {
-  // connectDragSource: ConnectDragSource
-}
+interface FastGridProps {}
 
 interface FastGridState {
   columnWidths: number[];
   columns: string[];
+  rows: string[];
 }
 
 class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
   state = {
-    columnWidths: [250, ...columns.map(c => 100)],
-    columns: columns
+    columnWidths: [250, ...initialColumns.map(c => 100)],
+    columns: initialColumns,
+    rows: initialRows
   };
 
-  private swapColumns = (x, y) => {
+  swapColumns = (x, y) => {
     const columns = [...this.state.columns];
     const indexX = columns.indexOf(x);
     const indexY = columns.indexOf(y);
     columns[indexX] = y;
     columns[indexY] = x;
     this.setState({ columns });
-  };
+  }
 
   cellRenderer = (e: GridCellProps) => {
-    if (e.rowIndex === 0) {
-      const { columns } = this.state;
+    const { columns, rows } = this.state;
 
+    if (e.rowIndex === 0) {
       return (
         <GridHeader
           key={e.key}
@@ -83,9 +73,11 @@ class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
         {Math.round(Math.random() * 10000) / 2}
       </div>
     );
-  };
+  }
 
   render() {
+    const { columns, rows } = this.state;
+
     return (
       <div>
         <MultiGrid

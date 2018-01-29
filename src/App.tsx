@@ -3,8 +3,8 @@ import "./App.css";
 import { DragDropContextProvider } from "react-dnd";
 // import HTML5Backend from "react-dnd-html5-backend";
 // import TouchBackend from "react-dnd-touch-backend";
-import MultiBackend from 'react-dnd-multi-backend';
-  import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'; // or any other pipeline
+import MultiBackend from "react-dnd-multi-backend";
+import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch"; // or any other pipeline
 
 // import SimpleGrid from './components/SimpleGrid';
 // import FastGrid from './components/FastGrid';
@@ -19,7 +19,7 @@ import NumberGrid from "./components/NumberGrid";
 //   enableTouchEvents: true
 // });
 
-const touchBackend = MultiBackend(HTML5toTouch)
+const touchBackend = MultiBackend(HTML5toTouch);
 
 class App extends React.Component<{}, {}> {
   // state = {
@@ -28,8 +28,9 @@ class App extends React.Component<{}, {}> {
   // };
   reportScrollEvent = (e: any) => {
     // console.log(e)
-  };
+  }
 
+  
   componentDidMount() {
     fetch("/tree.json")
       .then(rsp => rsp.json())
