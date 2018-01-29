@@ -7,7 +7,7 @@ import {
   DropTargetSpec
 } from "react-dnd";
 
-class GridHeaderDrop extends React.Component<any, any> {
+class RowHeaderDrop extends React.Component<any, any> {
   render() {
     const { connectDropTarget } = this.props;
 
@@ -24,7 +24,10 @@ const targetSpec: DropTargetSpec = {
   },
   drop(props) {
     return {
-      caption: props.caption,
+      obj: {
+        caption: props.caption,
+        type: "row"
+      },
       before: props.before
     };
   }
@@ -40,5 +43,5 @@ const targetCollector: DropTargetConnector = (
 });
 
 export default DropTarget("header-node", targetSpec, targetCollector)(
-  GridHeaderDrop
+  RowHeaderDrop
 );

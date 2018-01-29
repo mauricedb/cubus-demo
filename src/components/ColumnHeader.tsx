@@ -7,13 +7,12 @@ import {
   DragSourceCollector,
   DragSourceConnector,
   DragSourceMonitor,
-  ConnectDropTarget,
+  ConnectDropTarget
 } from "react-dnd";
 
-import GridHeaderDrop from './GridHeaderDrop';
+import ColumnHeaderDrop from "./ColumnHeaderDrop";
 
-
-interface GridHeaderProps {
+interface ColumnHeaderProps {
   connectDragSource: ConnectDragSource;
   connectDropTarget: ConnectDropTarget;
   connectDragPreview: Function;
@@ -24,10 +23,9 @@ interface GridHeaderProps {
   isOver: boolean;
 }
 
-interface GridHeaderState {}
+interface ColumnHeaderState {}
 
-
-class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
+class ColumnHeader extends React.PureComponent<ColumnHeaderProps, ColumnHeaderState> {
   componentDidMount() {
     const img = new Image();
     img.src = "http://netget.ca/wp-content/uploads/2016/10/cat-hungry-icon.png";
@@ -52,9 +50,9 @@ class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
     }
     return connectDragSource(
       <div className={classes.join(" ")} style={style}>
-        <GridHeaderDrop className="drop-left" caption={caption} before={true} />
+        <ColumnHeaderDrop className="drop-left" caption={caption} before={true} />
         {caption}
-        <GridHeaderDrop
+        <ColumnHeaderDrop
           className="drop-right"
           caption={caption}
           before={false}
@@ -64,18 +62,21 @@ class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
   }
 }
 
-let sourceSpec: DragSourceSpec<GridHeaderProps> = {
-  beginDrag: (props: GridHeaderProps) => ({
-    caption: props.caption,
+let sourceSpec: DragSourceSpec<ColumnHeaderProps> = {
+  beginDrag: (props: ColumnHeaderProps) => ({
+    obj: {
+      type: "column",
+      caption: props.caption
+    },
     swapMember: props.swapMember
   }),
 
-  endDrag(props: GridHeaderProps, monitor: DragSourceMonitor) {
+  endDrag(props: ColumnHeaderProps, monitor: DragSourceMonitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
 
     if (dropResult) {
-      item.swapMember(item.caption, dropResult.caption, dropResult.before);
+      item.swapMember(item.obj, dropResult.obj, dropResult.before);
     }
   }
 };
@@ -93,5 +94,5 @@ let sourceCollector: DragSourceCollector = (
 };
 
 export default DragSource("header-node", sourceSpec, sourceCollector)(
-  GridHeader
+  ColumnHeader
 );

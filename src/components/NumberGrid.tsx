@@ -1,6 +1,7 @@
 import * as React from "react";
 import { MultiGrid, GridCellProps } from "react-virtualized";
-import GridHeader from "./GridHeader";
+import ColumnHeader from "./ColumnHeader";
+import RowHeader from "./RowHeader";
 const viewSampleDefinition = require("./../ViewSampleDefinition.json");
 
 const initialColumns: string[] = [];
@@ -48,10 +49,20 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
     rows: initialRows
   };
 
+  swapItems = (dragging, dropped, before) => {
+    if (dragging.type !== dropped.type) {
+      this.swapRowsWithColumns();
+    } else if (dragging.type === "column") {
+      this.swapColumns(dragging, dropped, before);
+    } else {
+      this.swapRows(dragging, dropped, before);
+    }
+  };
+
   swapColumns = (dragging, dropped, before) => {
     let columns = [...this.state.columns];
-    const indexX = columns.indexOf(dragging);
-    let indexY = columns.indexOf(dropped);
+    const indexX = columns.indexOf(dragging.caption);
+    let indexY = columns.indexOf(dropped.caption);
 
     if (!before) {
       indexY++;
@@ -62,25 +73,47 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
     this.setState({ columns });
   };
 
+  swapRows = (dragging, dropped, before) => {
+    let rows = [...this.state.rows];
+    const indexX = rows.indexOf(dragging.caption);
+    let indexY = rows.indexOf(dropped.caption);
+
+    if (!before) {
+      indexY++;
+    }
+
+    rows = moveElements(rows, indexX, indexY);
+
+    this.setState({ rows });
+  };
+
+  swapRowsWithColumns = () => {
+    const { rows, columns } = this.state;
+    this.setState({ rows: columns, columns: rows });
+  };
+
   cellRenderer = (e: GridCellProps) => {
     const { columns, rows } = this.state;
 
     if (e.rowIndex === 0) {
       return (
-        <GridHeader
+        <ColumnHeader
           key={e.key}
           caption={columns[e.columnIndex - 1]}
           style={e.style}
-          swapMember={this.swapColumns}
+          swapMember={this.swapItems}
         />
       );
     }
 
     if (e.columnIndex === 0) {
       return (
-        <div className="header" key={e.key} style={e.style}>
-          {rows[e.rowIndex - 1]}
-        </div>
+        <RowHeader
+          key={e.key}
+          style={e.style}
+          caption={rows[e.rowIndex - 1]}
+          swapMember={this.swapItems}
+        />
       );
     }
 
