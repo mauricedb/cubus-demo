@@ -7,18 +7,11 @@ import {
   DragSourceCollector,
   DragSourceConnector,
   DragSourceMonitor,
-  // DragElementWrapper,
   ConnectDropTarget,
-  DropTarget,
-  DropTargetConnector,
-  DropTargetMonitor,
-  // ClientOffset,
-  DropTargetSpec
 } from "react-dnd";
 
-// import * as ReactDnD from "react-dnd";
+import GridHeaderDrop from './GridHeaderDrop';
 
-// const ReactDnD = require('react-dnd');
 
 interface GridHeaderProps {
   connectDragSource: ConnectDragSource;
@@ -33,40 +26,6 @@ interface GridHeaderProps {
 
 interface GridHeaderState {}
 
-class GridHeaderDrop2 extends React.Component<any, any> {
-  render() {
-    const { connectDropTarget } = this.props;
-
-    return connectDropTarget(<span className={this.props.className} />);
-  }
-}
-
-const targetSpec: DropTargetSpec = {
-  hover(props: any, monitor: DropTarget, component: any) {
-    console.log(props, monitor);
-    if (process.env.NODE_ENV === "production") {
-      console.log(props, monitor);
-    }
-  },
-  drop(props) {
-    return {
-      caption: props.caption,
-      before: props.before
-    };
-  }
-};
-
-const targetCollector: DropTargetConnector = (
-  connect: DropTargetConnector,
-  monitor: DropTargetMonitor
-) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver(),
-  canDrop: monitor.canDrop()
-});
-const GridHeaderDrop = DropTarget("header-node", targetSpec, targetCollector)(
-  GridHeaderDrop2
-);
 
 class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
   componentDidMount() {
@@ -76,9 +35,13 @@ class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
   }
 
   render() {
-    const { caption, style } = this.props;
-    const { connectDragSource } = this.props;
-    const { isDragging, isOver } = this.props;
+    const {
+      caption,
+      style,
+      connectDragSource,
+      isDragging,
+      isOver
+    } = this.props;
 
     const classes = ["header"];
     if (isOver) {

@@ -41,7 +41,7 @@ interface FastGridState {
   rows: string[];
 }
 
-class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
+class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   state = {
     columnWidths: [250, ...initialColumns.map(c => 100)],
     columns: initialColumns,
@@ -114,25 +114,4 @@ class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
   }
 }
 
-// let nodeSourceSpec: DragSourceSpec<FastGridProps> = {
-//   beginDrag: (props: FastGridProps) => ({}),
-
-// };
-
-// // Collect: Put drag state into props
-// let nodeSourceCollector = (connect: DragSourceConnector, monitor: DragSourceMonitor) => {
-//     return {
-//       connectDragSource: connect.dragSource(),
-//       isDragging: monitor.isDragging()
-//   }
-// };
-
-// @DragSource("new-node", nodeSourceSpec, nodeSourceCollector)
-// class FastGrid2 extends React.PureComponent<FastGridProps, {}> {
-//   render() {
-//     const { connectDragSource } = this.props;
-//     return connectDragSource(<FastGrid connectDragSource={connectDragSource}  />);
-//   }
-// }
-
-export default FastGrid;
+export default NumberGrid;
