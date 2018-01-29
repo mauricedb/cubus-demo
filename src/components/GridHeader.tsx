@@ -33,16 +33,51 @@ interface GridHeaderProps {
 
 interface GridHeaderState {}
 
+class GridHeaderDrop2 extends React.Component<any, any> {
+  render() {
+    const { connectDropTarget } = this.props;
+
+    return connectDropTarget(<span className={this.props.className} />);
+  }
+}
+
+const targetSpec: DropTargetSpec = {
+  hover(props: any, monitor: DropTarget, component: any) {
+    console.log(props, monitor);
+    if (process.env.NODE_ENV === "production") {
+      console.log(props, monitor);
+    }
+  },
+  drop(props) {
+    return {
+      caption: props.caption,
+      before: props.before
+    };
+  }
+};
+
+const targetCollector: DropTargetConnector = (
+  connect: DropTargetConnector,
+  monitor: DropTargetMonitor
+) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+  canDrop: monitor.canDrop()
+});
+const GridHeaderDrop = DropTarget("header-node", targetSpec, targetCollector)(
+  GridHeaderDrop2
+);
+
 class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
   componentDidMount() {
     const img = new Image();
-    img.src = 'http://netget.ca/wp-content/uploads/2016/10/cat-hungry-icon.png'
+    img.src = "http://netget.ca/wp-content/uploads/2016/10/cat-hungry-icon.png";
     img.onload = () => this.props.connectDragPreview(img);
   }
 
   render() {
     const { caption, style } = this.props;
-    const { connectDragSource, connectDropTarget } = this.props;
+    const { connectDragSource } = this.props;
     const { isDragging, isOver } = this.props;
 
     const classes = ["header"];
@@ -52,12 +87,16 @@ class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
     if (isDragging) {
       classes.push("is-dragging");
     }
-    return connectDropTarget(
-      connectDragSource(
-        <div className={classes.join(" ")} style={style}>
-          {caption}
-        </div>
-      )
+    return connectDragSource(
+      <div className={classes.join(" ")} style={style}>
+        <GridHeaderDrop className="drop-left" caption={caption} before={true} />
+        {caption}
+        <GridHeaderDrop
+          className="drop-right"
+          caption={caption}
+          before={false}
+        />
+      </div>
     );
   }
 }
@@ -73,7 +112,7 @@ let sourceSpec: DragSourceSpec<GridHeaderProps> = {
     const dropResult = monitor.getDropResult();
 
     if (dropResult) {
-      item.swapMember(item.caption, dropResult.caption);
+      item.swapMember(item.caption, dropResult.caption, dropResult.before);
     }
   }
 };
@@ -90,21 +129,6 @@ let sourceCollector: DragSourceCollector = (
   };
 };
 
-const targetSpec: DropTargetSpec = {
-  drop(props: GridHeaderProps) {
-    return { caption: props.caption };
-  }
-};
-
-const targetCollector: DropTargetConnector = (
-  connect: DropTargetConnector,
-  monitor: DropTargetMonitor
-) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver(),
-  canDrop: monitor.canDrop()
-});
-
-export default DropTarget("header-node", targetSpec, targetCollector)(
-  DragSource("header-node", sourceSpec, sourceCollector)(GridHeader)
+export default DragSource("header-node", sourceSpec, sourceCollector)(
+  GridHeader
 );

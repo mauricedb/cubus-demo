@@ -8,9 +8,10 @@
 }
 
 .header {
-color: red;
+  color: red;
   font-weight: bold;
   text-align: right;
+  position: relative;
 }
 
 .header[draggable] {
@@ -21,6 +22,19 @@ color: red;
   -o-user-select: none;
 }
 
+.drop-left,
+.drop-right {
+  position: absolute;
+  width: 33%;
+  height: 100%;
+}
+
+.drop-left{
+  left: 0;
+}
+.drop-right {
+  right: 0;
+}
 .is-dragging {
   background-color: green !important;
 }
