@@ -34,7 +34,7 @@ class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
   grid: MultiGrid | null;
 
   state = {
-    columnWidths: [...columns.map(c => 250), 250]
+    columnWidths: [250, ...columns.map(c => 100)]
   };
 
   cellRenderer = (e: GridCellProps) => {
@@ -56,10 +56,10 @@ class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
 
     return (
       <div className="cell" key={e.key} style={e.style}>
-        {`The cell ${e.columnIndex} ${e.rowIndex}`}
+        {Math.round(Math.random() * 10000) / 2}
       </div>
     );
-  }
+  };
 
   render() {
     return (

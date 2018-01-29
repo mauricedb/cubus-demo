@@ -6,12 +6,14 @@
 
 .header {
   font-weight: bold;
+  text-align: right;
 }
 
 .cell {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: right;
 }
 
 .splitter {
