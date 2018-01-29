@@ -1,24 +1,8 @@
 import * as React from "react";
 
 import { MultiGrid, GridCellProps } from "react-virtualized";
-// import { 
-//   ConnectDragSource,
-//   // DragDropContext, 
-//   DragSource, 
-//   DragSourceSpec, 
-//   // DragSourceCollector, 
-//   DragSourceConnector, 
-//   DragSourceMonitor, 
-//   // DragElementWrapper,
-//   // ConnectDropTarget,
-//   // DropTarget,
-//   // DropTargetConnector,
-//   // DropTargetMonitor,
-//   // ClientOffset,
-//   // DropTargetSpec 
-// } from 'react-dnd';
 
-import GridHeader from './GridHeader';
+import GridHeader from "./GridHeader";
 
 const viewSampleDefinition = require("./../ViewSampleDefinition.json");
 
@@ -41,7 +25,7 @@ viewSampleDefinition.dimensions.dimension[1].referencedMembers.member[0].member
     });
   });
 
-  /* New node from the node well */
+/* New node from the node well */
 // export interface NodeSourceProps {
 //   isDragging : boolean;
 //   connectDragSource: ConnectDragSource;
@@ -54,20 +38,35 @@ interface FastGridProps {
 
 interface FastGridState {
   columnWidths: number[];
+  columns: string[];
 }
 
 class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
-  // screenX = 0;
-  // grid: MultiGrid | null;
-
   state = {
-    columnWidths: [250, ...columns.map(c => 100)]
+    columnWidths: [250, ...columns.map(c => 100)],
+    columns: columns
+  };
+
+  private swapColumns = (x, y) => {
+    const columns = [...this.state.columns];
+    const indexX = columns.indexOf(x);
+    const indexY = columns.indexOf(y);
+    columns[indexX] = y;
+    columns[indexY] = x;
+    this.setState({ columns });
   };
 
   cellRenderer = (e: GridCellProps) => {
     if (e.rowIndex === 0) {
+      const { columns } = this.state;
+
       return (
-        <GridHeader key={e.key} caption={columns[e.columnIndex - 1]} style={e.style} />
+        <GridHeader
+          key={e.key}
+          caption={columns[e.columnIndex - 1]}
+          style={e.style}
+          swapMember={this.swapColumns}
+        />
       );
     }
 
@@ -107,13 +106,10 @@ class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
   }
 }
 
-
-
 // let nodeSourceSpec: DragSourceSpec<FastGridProps> = {
 //   beginDrag: (props: FastGridProps) => ({}),
-  
-// };
 
+// };
 
 // // Collect: Put drag state into props
 // let nodeSourceCollector = (connect: DragSourceConnector, monitor: DragSourceMonitor) => {
@@ -123,7 +119,6 @@ class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
 //   }
 // };
 
-
 // @DragSource("new-node", nodeSourceSpec, nodeSourceCollector)
 // class FastGrid2 extends React.PureComponent<FastGridProps, {}> {
 //   render() {
@@ -131,6 +126,5 @@ class FastGrid extends React.PureComponent<FastGridProps, FastGridState> {
 //     return connectDragSource(<FastGrid connectDragSource={connectDragSource}  />);
 //   }
 // }
-
 
 export default FastGrid;

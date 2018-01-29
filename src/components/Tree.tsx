@@ -75,16 +75,16 @@ class Tree extends React.Component<TreeProps, TreeState> {
   onCellDragOver = (e: any) => {
     e.preventDefault();
     console.log("onCellDragOver", e);
-    const id = e.target.dataset["id"];
+    // const id = e.target.dataset["id"];
 
-    let selected = null;
-    selected = { ...this.state.selected, [id]: this.selected };
-    this.setState({ selected });
+    // let selected = null;
+    // selected = { ...this.state.selected, [id]: this.selected };
+    // this.setState({ selected });
   };
 
   cellRenderer = (e: TableCellProps) => {
     const row: any = e.rowData;
-    let expander = null;
+    let expander: null| React.ReactElement<any> = null;
     let indentation = row.indentation * 25;
 
     if (row.friends.length) {
@@ -126,7 +126,7 @@ class Tree extends React.Component<TreeProps, TreeState> {
 
   onRowClick = (e: RowMouseEventHandlerParams) => {
     const data: any = e.rowData;
-    let selected = null;
+    let selected: null|any = null;
     if (!this.state.selected[data.id]) {
       selected = { ...this.state.selected, [data.id]: data };
     } else {

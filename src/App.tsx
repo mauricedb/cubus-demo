@@ -1,5 +1,7 @@
 import * as React from "react";
 import "./App.css";
+import { DragDropContextProvider } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 
 // import SimpleGrid from './components/SimpleGrid';
 // import FastGrid from './components/FastGrid';
@@ -9,14 +11,14 @@ import NumberGrid from "./components/NumberGrid";
 // const  data = require('./stocks.json');
 // const treeData = require('./tree.json');
 
-class App extends React.Component<{}, {  }> {
+class App extends React.Component<{}, {}> {
   // state = {
   //   count: 0,
   //   treeData: []
   // };
   reportScrollEvent = (e: any) => {
     // console.log(e)
-  }
+  };
 
   componentDidMount() {
     fetch("/tree.json")
@@ -31,7 +33,9 @@ class App extends React.Component<{}, {  }> {
         </button> */}
         {/* <SimpleGrid data={data} /> */}
         {/* <FastGrid data={data} /> */}
-        <NumberGrid />
+        <DragDropContextProvider backend={HTML5Backend}>
+          <NumberGrid />
+        </DragDropContextProvider>
         {/* <Tree data={this.state.treeData} /> */}
       </div>
     );
