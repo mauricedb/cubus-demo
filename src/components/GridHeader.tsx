@@ -23,6 +23,7 @@ import {
 interface GridHeaderProps {
   connectDragSource: ConnectDragSource;
   connectDropTarget: ConnectDropTarget;
+  connectDragPreview: Function;
   caption: string;
   style: React.CSSProperties;
   swapMember: Function;
@@ -33,6 +34,12 @@ interface GridHeaderProps {
 interface GridHeaderState {}
 
 class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
+  componentDidMount() {
+    const img = new Image();
+    img.src = 'http://netget.ca/wp-content/uploads/2016/10/cat-hungry-icon.png'
+    img.onload = () => this.props.connectDragPreview(img);
+  }
+
   render() {
     const { caption, style } = this.props;
     const { connectDragSource, connectDropTarget } = this.props;
@@ -78,7 +85,8 @@ let sourceCollector: DragSourceCollector = (
 ) => {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
+    connectDragPreview: connect.dragPreview()
   };
 };
 
