@@ -9,6 +9,14 @@
   text-align: right;
 }
 
+.is-dragging {
+  background-color: green !important;
+}
+
+.is-over {
+  background-color: blue;
+}
+
 .cell {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -22,7 +30,6 @@
   cursor: ew-resize;
   padding: 0 3px;
 }
-
 
 .selected {
   background-color: blue;

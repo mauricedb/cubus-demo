@@ -27,6 +27,8 @@ interface GridHeaderProps {
   caption: string;
   style: React.CSSProperties;
   swapMember: Function;
+  isDragging: boolean;
+  isOver: boolean;
 }
 
 interface GridHeaderState {}
@@ -64,10 +66,18 @@ class GridHeader extends React.PureComponent<GridHeaderProps, GridHeaderState> {
   render() {
     const { caption, style } = this.props;
     const { connectDragSource, connectDropTarget } = this.props;
+    const { isDragging, isOver } = this.props;
 
+    const classes = ["header"];
+    if (isOver) {
+      classes.push("is-over");
+    }
+    if (isDragging) {
+      classes.push("is-dragging");
+    }
     return connectDropTarget(
       connectDragSource(
-        <div className="header" style={style}>
+        <div className={classes.join(" ")} style={style}>
           {caption}
         </div>
       )
