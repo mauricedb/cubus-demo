@@ -118,15 +118,30 @@ class App extends React.Component<{}, {}> {
   };
 
   swapOffspread = (dragging, dropped, before) => {
+    console.log(dropped);
+
     if (dropped.type === "row") {
       const { rows } = this.state;
-      const newRows = rows.map(row => {
-        if (row == dropped.dimension) {
-          return dragging.dimension;
-        }
-        return row;
-      });
-      this.setState({ rows: newRows });
+
+      if (dropped.isLeft) {
+        const index = rows.indexOf(dropped.dimension);
+        const newRows = [...rows];
+        newRows.splice(index, 0, dragging.dimension);
+        this.setState({ rows: newRows });
+      } else if (dropped.isRight) {
+        const index = rows.indexOf(dropped.dimension) + 1;
+        const newRows = [...rows];
+        newRows.splice(index, 0, dragging.dimension);
+        this.setState({ rows: newRows });
+      } else {
+        const newRows = rows.map(row => {
+          if (row == dropped.dimension) {
+            return dragging.dimension;
+          }
+          return row;
+        });
+        this.setState({ rows: newRows });
+      }
     } else {
       const { columns } = this.state;
       const newColumns = columns.map(column => {
@@ -150,11 +165,11 @@ class App extends React.Component<{}, {}> {
       d => rows.indexOf(d) === -1 && columns.indexOf(d) === -1
     );
 
-    const rowMembers = rows.map(row =>
-      getReferencedMembers(row.referencedMembers.member, row)
-    ) .map(d =>
-      d.sort((x, y) => (x.order < y.order ? -1 : x.order > y.order ? 1 : 0))
-    );
+    const rowMembers = rows
+      .map(row => getReferencedMembers(row.referencedMembers.member, row))
+      .map(d =>
+        d.sort((x, y) => (x.order < y.order ? -1 : x.order > y.order ? 1 : 0))
+      );
     let columnsMembers = columns
       .map(column =>
         getReferencedMembers(column.referencedMembers.member, column)
@@ -162,8 +177,6 @@ class App extends React.Component<{}, {}> {
       .map(d =>
         d.sort((x, y) => (x.order < y.order ? -1 : x.order > y.order ? 1 : 0))
       );
-
-    console.table(columnsMembers[0]);
 
     return (
       <div className="App">
