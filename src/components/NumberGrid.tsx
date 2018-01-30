@@ -20,10 +20,21 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
     const { columns, rows, swapItems } = this.props;
 
     if (e.rowIndex < columns.length) {
+
+      let column: any;
+      let columnFactor = 1;
+      for (var i = e.rowIndex + 1; i < columns.length; i++) {
+        columnFactor *= columns[i].length;
+      }
+
+      let index = Math.floor((e.columnIndex - rows.length) / columnFactor);
+      index = index % columns[e.rowIndex].length;
+      column = columns[e.rowIndex][index];
+
       const caption =
         e.columnIndex < rows.length
           ? ""
-          : columns[e.rowIndex][e.columnIndex - rows.length].name;
+          : column.name;
 
       return (
         <ColumnHeader
@@ -37,7 +48,6 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
 
     if (e.columnIndex < rows.length) {
       let row: any;
-
       let rowFactor = 1;
       for (var i = e.columnIndex + 1; i < rows.length; i++) {
         rowFactor *= rows[i].length;

@@ -60,7 +60,7 @@ class App extends React.Component<{}, {}> {
   state = {
     dimensions: originalDimensions,
     rows: [originalDimensions[0], originalDimensions[1]],
-    columns: [originalDimensions[2]]
+    columns: [originalDimensions[2], originalDimensions[3]]
   };
 
   swapColumns = (dragging, dropped, before) => {
