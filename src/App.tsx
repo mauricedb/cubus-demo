@@ -106,6 +106,16 @@ class App extends React.Component<{}, {}> {
     }
   };
 
+  swapOffspread = (dragging, dropped, before) => {
+    console.log(dragging, dropped, before);
+
+    if (dropped.type === "row") {
+      this.setState({ rows: [dragging.dimension] });
+    } else {
+      this.setState({ columns: [dragging.dimension] });
+    }
+  };
+
   componentDidMount() {
     fetch("/tree.json")
       .then(rsp => rsp.json())
@@ -130,7 +140,10 @@ class App extends React.Component<{}, {}> {
         {/* <FastGrid data={data} /> */}
         <DragDropContextProvider backend={touchBackend}>
           <div>
-            <Offspread dimensions={offspread} />
+            <Offspread
+              dimensions={offspread}
+              swapOffspread={this.swapOffspread}
+            />
             <NumberGrid
               rows={rowMembers}
               columns={columnsMembers}

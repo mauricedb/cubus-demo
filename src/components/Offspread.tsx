@@ -1,24 +1,20 @@
 import * as React from "react";
 
+import OffspreadItem from "./OffspreadItem";
 import "./Offspread.css";
 
 interface OffspreadProps {
-    dimensions: any[];
+  dimensions: any[];
+  swapOffspread: Function
 }
 
 class Offspread extends React.Component<OffspreadProps, {}> {
   render() {
-    const { dimensions } = this.props;
-
-    console.table(dimensions);
+    const { dimensions, swapOffspread } = this.props;
 
     return (
       <div className="offspreads">
-        {dimensions.map(d => (
-          <span key={d.name} className="offspread">
-            {d.name}
-          </span>
-        ))}
+        {dimensions.map(d => <OffspreadItem key={d.name} dimension={d} swapOffspread={swapOffspread} />)}
       </div>
     );
   }
