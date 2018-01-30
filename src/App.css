@@ -55,8 +55,32 @@
   background-color: green !important;
 }
 
-.is-over {
-  background-color: blue;
+.is-over.drop-left{
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-left-color: blue;
+  left: -1px;
+}
+
+.is-over.drop-right{
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: blue;
+  right: -1px;
+}
+
+.is-over.drop-top{
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: blue;
+  top: -1px;
+}
+
+.is-over.drop-bottom{
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: blue;
+  bottom: -1px;
 }
 
 .cell {

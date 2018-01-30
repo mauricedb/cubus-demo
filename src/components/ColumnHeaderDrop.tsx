@@ -7,11 +7,16 @@ import {
   DropTargetSpec
 } from "react-dnd";
 
-class  ColumnHeaderDrop extends React.Component<any, any> {
+class ColumnHeaderDrop extends React.Component<any, any> {
   render() {
-    const { connectDropTarget } = this.props;
+    const { connectDropTarget, isOver } = this.props;
 
-    return connectDropTarget(<span className={this.props.className} />);
+    const classes = [this.props.className];
+    if (isOver) {
+      classes.push("is-over");
+    }
+
+    return connectDropTarget(<span className={classes.join(" ")} />);
   }
 }
 
@@ -26,6 +31,7 @@ const targetSpec: DropTargetSpec = {
       obj: {
         caption: props.caption,
         dimension: props.dimension,
+        column: props.column,
         type: "column"
       },
       before: props.before
@@ -43,5 +49,5 @@ const targetCollector: DropTargetConnector = (
 });
 
 export default DropTarget("header-node", targetSpec, targetCollector)(
-   ColumnHeaderDrop
+  ColumnHeaderDrop
 );

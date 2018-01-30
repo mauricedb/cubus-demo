@@ -28,8 +28,8 @@ const originalDimensions = viewSampleDefinition.dimensions.dimension;
 function getReferencedMembers(
   member: any,
   dimension: any,
-  memberNames: Array<string> = []
-): Array<string> {
+  memberNames: any[] = []
+): any[] {
   if (typeof member === "undefined") {
     return memberNames;
   }
@@ -40,6 +40,9 @@ function getReferencedMembers(
     }
   } else {
     member.dimension = dimension;
+    if (!member.order) {
+      member.order = memberNames.length;
+    }
     memberNames.push(member);
     getReferencedMembers(member.member, dimension, memberNames);
   }
@@ -47,16 +50,16 @@ function getReferencedMembers(
   return memberNames;
 }
 
-function moveElements(data, old_index, new_index) {
-  if (new_index >= data.length) {
-    var k = new_index - data.length;
-    while (k-- + 1) {
-      data.push(undefined);
-    }
-  }
-  data.splice(new_index, 0, data.splice(old_index, 1)[0]);
-  return data;
-}
+// function moveElements(data, old_index, new_index) {
+//   if (new_index >= data.length) {
+//     var k = new_index - data.length;
+//     while (k-- + 1) {
+//       data.push(undefined);
+//     }
+//   }
+//   data.splice(new_index, 0, data.splice(old_index, 1)[0]);
+//   return data;
+// }
 
 class App extends React.Component<{}, {}> {
   state = {
@@ -67,28 +70,24 @@ class App extends React.Component<{}, {}> {
 
   swapColumns = (dragging, dropped, before) => {
     let columns = [...this.state.columns];
-    const indexX = columns.indexOf(dragging.caption);
-    let indexY = columns.indexOf(dropped.caption);
 
-    if (!before) {
-      indexY++;
+    if (before) {
+      dragging.column.order = dropped.column.order - 0.1;
+    } else {
+      dragging.column.order = dropped.column.order + 0.1;
     }
-
-    columns = moveElements(columns, indexX, indexY);
 
     this.setState({ columns });
   };
 
   swapRows = (dragging, dropped, before) => {
     let rows = [...this.state.rows];
-    const indexX = rows.indexOf(dragging.caption);
-    let indexY = rows.indexOf(dropped.caption);
 
-    if (!before) {
-      indexY++;
+    if (before) {
+      dragging.row.order = dropped.row.order - 0.1;
+    } else {
+      dragging.row.order = dropped.row.order + 0.1;
     }
-
-    rows = moveElements(rows, indexX, indexY);
 
     this.setState({ rows });
   };
@@ -153,10 +152,18 @@ class App extends React.Component<{}, {}> {
 
     const rowMembers = rows.map(row =>
       getReferencedMembers(row.referencedMembers.member, row)
+    ) .map(d =>
+      d.sort((x, y) => (x.order < y.order ? -1 : x.order > y.order ? 1 : 0))
     );
-    let columnsMembers = columns.map(column =>
-      getReferencedMembers(column.referencedMembers.member, column)
-    );
+    let columnsMembers = columns
+      .map(column =>
+        getReferencedMembers(column.referencedMembers.member, column)
+      )
+      .map(d =>
+        d.sort((x, y) => (x.order < y.order ? -1 : x.order > y.order ? 1 : 0))
+      );
+
+    console.table(columnsMembers[0]);
 
     return (
       <div className="App">

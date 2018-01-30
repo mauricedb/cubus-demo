@@ -40,6 +40,7 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
           style={e.style}
           swapMember={swapItems}
           dimension={dimension}
+          column={column}
         />
       );
     }
@@ -62,6 +63,7 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
           caption={row.name}
           swapMember={swapItems}
           dimension={row.dimension}
+          row={row}
         />
       );
     }

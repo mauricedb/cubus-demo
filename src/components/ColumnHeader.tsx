@@ -22,6 +22,7 @@ interface ColumnHeaderProps {
   isDragging: boolean;
   isOver: boolean;
   dimension: any;
+  column: any;
 }
 
 interface ColumnHeaderState {}
@@ -43,7 +44,8 @@ class ColumnHeader extends React.PureComponent<
       connectDragSource,
       isDragging,
       isOver,
-      dimension
+      dimension,
+      column
     } = this.props;
 
     const classes = ["header"];
@@ -59,6 +61,7 @@ class ColumnHeader extends React.PureComponent<
           className="drop-left"
           caption={caption}
           dimension={dimension}
+          column={column}
           before={true}
         />
         {caption}
@@ -66,6 +69,7 @@ class ColumnHeader extends React.PureComponent<
           className="drop-right"
           caption={caption}
           dimension={dimension}
+          column={column}
           before={false}
         />
       </div>
@@ -78,6 +82,7 @@ let sourceSpec: DragSourceSpec<ColumnHeaderProps> = {
     obj: {
       type: "column",
       dimension: props.dimension,
+      column: props.column,
       caption: props.caption
     },
     swapMember: props.swapMember
