@@ -39,7 +39,10 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
 
   state = {
     isLeft: false,
-    isRight: false
+    isRight: false,
+    isTop: false,
+    isBottom: false,
+    isCenter: false
   };
 
   componentDidMount() {
@@ -70,13 +73,17 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
     }
 
     if (isOver && clientOffset && this.el) {
-      const { isRight, isLeft } = this.state;
+      const { isRight, isLeft, isTop, isBottom, isCenter } = this.state;
 
       if (isRight) {
         classes.push("drop-right");
       } else if (isLeft) {
         classes.push("drop-left");
-      } else {
+      } else if (isTop) {
+        classes.push("drop-top");
+      } else if (isBottom) {
+        classes.push("drop-bottom");
+      } else if (isCenter) {
         classes.push("drop-center");
       }
     }
@@ -134,11 +141,27 @@ const targetSpec: DropTargetSpec = {
       console.log(props, monitor);
     }
 
+    const dragItem = monitor.getItem();
+    console.log(dragItem);
+
     const clientOffset = monitor.getClientOffset();
     const clientRect = component.el.getBoundingClientRect();
-    const isLeft = clientOffset.x < clientRect.left + clientRect.width / 4;
-    const isRight = clientOffset.x > clientRect.right - clientRect.width / 4;
-    component.setState({ isLeft, isRight });
+
+    let isLeft = false;
+    let isRight = false;
+    let isCenter = false;
+    let isTop = false;
+    let isBottom = false;
+
+    if (dragItem.obj.type === "offspread") {
+      isLeft = clientOffset.x < clientRect.left + clientRect.width / 4;
+      isRight = clientOffset.x > clientRect.right - clientRect.width / 4;
+      isCenter = !(isLeft || isRight);
+    } else if (dragItem.obj.type === "row") {
+      isTop = clientOffset.y < clientRect.top + clientRect.height / 2;
+      isBottom = clientOffset.y > clientRect.bottom - clientRect.height / 2;
+    }
+    component.setState({ isTop, isBottom, isLeft, isRight, isCenter });
   },
   drop(props, monitor, component) {
     const clientOffset = monitor.getClientOffset();
@@ -146,6 +169,7 @@ const targetSpec: DropTargetSpec = {
     const isTop = clientOffset.y < clientRect.top + clientRect.height / 2;
     const isLeft = clientOffset.x < clientRect.left + clientRect.width / 4;
     const isRight = clientOffset.x > clientRect.right - clientRect.width / 4;
+
     return {
       obj: {
         caption: props.caption,
