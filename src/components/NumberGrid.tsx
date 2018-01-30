@@ -56,13 +56,14 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
       let index = Math.floor((e.rowIndex - columns.length) / rowFactor);
       index = index % rows[e.columnIndex].length;
       row = rows[e.columnIndex][index];
-
+      
       return (
         <RowHeader
           key={e.key}
           style={e.style}
           caption={row.name}
           swapMember={swapItems}
+          dimension={row.dimension}
         />
       );
     }

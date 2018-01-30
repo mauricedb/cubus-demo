@@ -27,6 +27,7 @@ const originalDimensions = viewSampleDefinition.dimensions.dimension;
 
 function getReferencedMembers(
   member: any,
+  dimension: any,
   memberNames: Array<string> = []
 ): Array<string> {
   if (typeof member === "undefined") {
@@ -35,11 +36,12 @@ function getReferencedMembers(
 
   if (member.constructor === Array) {
     for (let i = 0; i < member.length; i++) {
-      getReferencedMembers(member[i], memberNames);
+      getReferencedMembers(member[i], dimension, memberNames);
     }
   } else {
+    member.dimension = dimension;
     memberNames.push(member);
-    getReferencedMembers(member.member, memberNames);
+    getReferencedMembers(member.member, dimension, memberNames);
   }
 
   return memberNames;
@@ -110,7 +112,19 @@ class App extends React.Component<{}, {}> {
     console.log(dragging, dropped, before);
 
     if (dropped.type === "row") {
-      this.setState({ rows: [dragging.dimension] });
+      const { rows } = this.state;
+      // console.table(rows);
+      // console.log(dropped);
+
+      const newRows = rows.map(row => {
+        if (row == dropped.dimension){
+          return dragging.dimension;
+        }
+        return row;
+      });
+      this.setState({ rows: newRows });
+
+      // this.setState({ rows: [dragging.dimension] });
     } else {
       this.setState({ columns: [dragging.dimension] });
     }
@@ -128,10 +142,10 @@ class App extends React.Component<{}, {}> {
     );
 
     const rowMembers = rows.map(row =>
-      getReferencedMembers(row.referencedMembers.member)
+      getReferencedMembers(row.referencedMembers.member, row)
     );
     let columnsMembers = columns.map(column =>
-      getReferencedMembers(column.referencedMembers.member)
+      getReferencedMembers(column.referencedMembers.member, column)
     );
 
     return (

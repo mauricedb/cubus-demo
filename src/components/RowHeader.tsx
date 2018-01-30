@@ -20,6 +20,7 @@ interface RowHeaderProps {
   swapMember: Function;
   isDragging: boolean;
   isOver: boolean;
+  dimension: any;
 }
 
 interface RowHeaderState {}
@@ -37,7 +38,8 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
       style,
       connectDragSource,
       isDragging,
-      isOver
+      isOver,
+      dimension
     } = this.props;
 
     const classes = ["header"];
@@ -49,11 +51,17 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
     }
     return connectDragSource(
       <div className={classes.join(" ")} style={style}>
-        <RowHeaderDrop className="drop-top" caption={caption} before={true} />
+        <RowHeaderDrop
+          className="drop-top"
+          caption={caption}
+          dimension={dimension}
+          before={true}
+        />
         {caption}
         <RowHeaderDrop
           className="drop-bottom"
           caption={caption}
+          dimension={dimension}
           before={false}
         />
       </div>

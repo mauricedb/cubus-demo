@@ -10,7 +10,6 @@ import {
 class RowHeaderDrop extends React.Component<any, any> {
   render() {
     const { connectDropTarget } = this.props;
-
     return connectDropTarget(<span className={this.props.className} />);
   }
 }
@@ -25,6 +24,7 @@ const targetSpec: DropTargetSpec = {
     return {
       obj: {
         caption: props.caption,
+        dimension: props.dimension,
         type: "row"
       },
       before: props.before
