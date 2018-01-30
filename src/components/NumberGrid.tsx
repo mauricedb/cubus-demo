@@ -1,5 +1,9 @@
 import * as React from "react";
-import { MultiGrid, GridCellProps } from "react-virtualized";
+import {
+  MultiGrid,
+  GridCellProps,
+  defaultCellRangeRenderer
+} from "react-virtualized";
 import ColumnHeader from "./ColumnHeader";
 import RowHeader from "./RowHeader";
 
@@ -12,12 +16,34 @@ interface FastGridProps {
 interface FastGridState {}
 
 class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
+  rowStartIndex = 0;
+
   state = {
     // columnWidths: [250, ...initialColumns.map(c => 100)],
   };
 
+  cellRangeRenderer = e => {
+    this.rowStartIndex = e.rowStartIndex;
+
+    const children = defaultCellRangeRenderer(e);
+    // console.log(e.rowStartIndex)
+
+    // this.rowStartIndex = 999999999;
+
+    return children;
+  };
+
   cellRenderer = (e: GridCellProps) => {
     const { columns, rows, swapItems } = this.props;
+
+    var g: any = e.parent;
+    if (g.getOffsetForCell) {
+      var o = g.getOffsetForCell({
+        columnIndex: e.columnIndex,
+        rowIndex: e.rowIndex
+      });
+      console.log(o);
+    }
 
     if (e.rowIndex < columns.length) {
       let column: any;
@@ -55,12 +81,28 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
       let index = Math.floor((e.rowIndex - columns.length) / rowFactor);
       index = index % rows[e.columnIndex].length;
       row = rows[e.columnIndex][index];
+      let rowName = row.name;
+
+      if (
+        e.rowIndex > columns.length &&
+        e.rowIndex > this.rowStartIndex + columns.length
+      ) {
+        let prevIndex = Math.floor(
+          (e.rowIndex - 1 - columns.length) / rowFactor
+        );
+        prevIndex = prevIndex % rows[e.columnIndex].length;
+        const prevRow = rows[e.columnIndex][prevIndex];
+
+        if (prevRow.name === rowName) {
+          rowName = "";
+        }
+      }
 
       return (
         <RowHeader
           key={e.key}
           style={e.style}
-          caption={row.name}
+          caption={rowName}
           swapMember={swapItems}
           dimension={row.dimension}
           row={row}
@@ -86,6 +128,7 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
     return (
       <div>
         <MultiGrid
+          cellRangeRenderer={this.cellRangeRenderer}
           cellRenderer={this.cellRenderer}
           height={window.innerHeight - 25}
           width={window.innerWidth}
