@@ -19,11 +19,12 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   cellRenderer = (e: GridCellProps) => {
     const { columns, rows, swapItems } = this.props;
 
-    if (e.rowIndex === 0) {
+    if (e.rowIndex < columns.length) {
       const caption =
         e.columnIndex < rows.length
           ? ""
-          : columns[e.columnIndex - rows.length].name;
+          : columns[e.rowIndex][e.columnIndex - rows.length].name;
+
       return (
         <ColumnHeader
           key={e.key}
@@ -35,14 +36,16 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
     }
 
     if (e.columnIndex < rows.length) {
-      let row;
-      if (e.columnIndex === 0) {
-        const index = Math.floor((e.rowIndex - 1) / rows[1].length)
-        row = rows[0][index];
-      } else if (e.columnIndex === 1){
-        const index = Math.floor((e.rowIndex - 1) % rows[1].length)
-        row = rows[1][index];
+      let row: any;
+
+      let rowFactor = 1;
+      for (var i = e.columnIndex + 1; i < rows.length; i++) {
+        rowFactor *= rows[i].length;
       }
+
+      let index = Math.floor((e.rowIndex - columns.length) / rowFactor);
+      index = index % rows[e.columnIndex].length;
+      row = rows[e.columnIndex][index];
 
       return (
         <RowHeader
@@ -62,12 +65,13 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   };
 
   getRowCount(rows) {
-    return rows[0].length * rows[1].length;
+    return rows.reduce((p, c) => c.length * p, 1);
   }
   render() {
     const { columns, rows } = this.props;
-    const rowCount = this.getRowCount(rows);
-    console.log(rowCount);
+    const rowCount = this.getRowCount(rows) + columns.length;
+    const columnCount = this.getRowCount(columns) + rows.length;
+    // console.log(columnCount);
     return (
       <div>
         <MultiGrid
@@ -77,7 +81,7 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
           rowHeight={20}
           columnWidth={({ index }) => 200}
           rowCount={rowCount}
-          columnCount={columns.length + rows.length}
+          columnCount={columnCount}
           fixedRowCount={columns.length}
           fixedColumnCount={rows.length}
           styleTopLeftGrid={{ width: rows.length * 200 }}

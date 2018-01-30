@@ -130,9 +130,8 @@ class App extends React.Component<{}, {}> {
     const rowMembers = rows.map(row =>
       getReferencedMembers(row.referencedMembers.member)
     );
-    // let rowMembers = getReferencedMembers(rows[0].referencedMembers.member);
-    let columnsMembers = getReferencedMembers(
-      columns[0].referencedMembers.member
+    let columnsMembers = columns.map(column =>
+      getReferencedMembers(column.referencedMembers.member)
     );
 
     return (
