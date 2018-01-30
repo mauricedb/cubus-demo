@@ -21,11 +21,15 @@ interface ColumnHeaderProps {
   swapMember: Function;
   isDragging: boolean;
   isOver: boolean;
+  dimension: any;
 }
 
 interface ColumnHeaderState {}
 
-class ColumnHeader extends React.PureComponent<ColumnHeaderProps, ColumnHeaderState> {
+class ColumnHeader extends React.PureComponent<
+  ColumnHeaderProps,
+  ColumnHeaderState
+> {
   componentDidMount() {
     const img = new Image();
     img.src = "http://netget.ca/wp-content/uploads/2016/10/cat-hungry-icon.png";
@@ -38,7 +42,8 @@ class ColumnHeader extends React.PureComponent<ColumnHeaderProps, ColumnHeaderSt
       style,
       connectDragSource,
       isDragging,
-      isOver
+      isOver,
+      dimension
     } = this.props;
 
     const classes = ["header"];
@@ -50,11 +55,17 @@ class ColumnHeader extends React.PureComponent<ColumnHeaderProps, ColumnHeaderSt
     }
     return connectDragSource(
       <div className={classes.join(" ")} style={style}>
-        <ColumnHeaderDrop className="drop-left" caption={caption} before={true} />
+        <ColumnHeaderDrop
+          className="drop-left"
+          caption={caption}
+          dimension={dimension}
+          before={true}
+        />
         {caption}
         <ColumnHeaderDrop
           className="drop-right"
           caption={caption}
+          dimension={dimension}
           before={false}
         />
       </div>

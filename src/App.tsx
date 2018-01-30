@@ -113,20 +113,22 @@ class App extends React.Component<{}, {}> {
 
     if (dropped.type === "row") {
       const { rows } = this.state;
-      // console.table(rows);
-      // console.log(dropped);
-
       const newRows = rows.map(row => {
-        if (row == dropped.dimension){
+        if (row == dropped.dimension) {
           return dragging.dimension;
         }
         return row;
       });
       this.setState({ rows: newRows });
-
-      // this.setState({ rows: [dragging.dimension] });
     } else {
-      this.setState({ columns: [dragging.dimension] });
+      const { columns } = this.state;
+      const newColumns = columns.map(column => {
+        if (column == dropped.dimension) {
+          return dragging.dimension;
+        }
+        return column;
+      });
+      this.setState({ columns: newColumns });
     }
   };
 

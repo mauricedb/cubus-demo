@@ -26,6 +26,7 @@ const targetSpec: DropTargetSpec = {
     return {
       obj: {
         caption: props.caption,
+        dimension: props.dimension,
         type: "column"
       },
       before: props.before
