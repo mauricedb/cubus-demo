@@ -25,28 +25,85 @@ const touchBackend = MultiBackend(HTML5toTouch);
 const viewSampleDefinition = require("./ViewSampleDefinition.json");
 const originalDimensions = viewSampleDefinition.dimensions.dimension;
 
-function getReferencedMembers(member: any, memberNames: Array<string> = []): Array<string> {
-  if (typeof (member) === 'undefined'){
-      return memberNames;
+function getReferencedMembers(
+  member: any,
+  memberNames: Array<string> = []
+): Array<string> {
+  if (typeof member === "undefined") {
+    return memberNames;
   }
 
   if (member.constructor === Array) {
-      for (let i = 0; i < member.length; i++) {
-          getReferencedMembers(member[i], memberNames);
-      }
+    for (let i = 0; i < member.length; i++) {
+      getReferencedMembers(member[i], memberNames);
+    }
   } else {
-      memberNames.push(member)
-      getReferencedMembers(member.member, memberNames);
+    memberNames.push(member);
+    getReferencedMembers(member.member, memberNames);
   }
 
   return memberNames;
-
 }
+
+function moveElements(data, old_index, new_index) {
+  if (new_index >= data.length) {
+    var k = new_index - data.length;
+    while (k-- + 1) {
+      data.push(undefined);
+    }
+  }
+  data.splice(new_index, 0, data.splice(old_index, 1)[0]);
+  return data;
+}
+
 class App extends React.Component<{}, {}> {
   state = {
     dimensions: originalDimensions,
     rows: [originalDimensions[0]],
     columns: [originalDimensions[1]]
+  };
+
+  swapColumns = (dragging, dropped, before) => {
+    let columns = [...this.state.columns];
+    const indexX = columns.indexOf(dragging.caption);
+    let indexY = columns.indexOf(dropped.caption);
+
+    if (!before) {
+      indexY++;
+    }
+
+    columns = moveElements(columns, indexX, indexY);
+
+    this.setState({ columns });
+  };
+
+  swapRows = (dragging, dropped, before) => {
+    let rows = [...this.state.rows];
+    const indexX = rows.indexOf(dragging.caption);
+    let indexY = rows.indexOf(dropped.caption);
+
+    if (!before) {
+      indexY++;
+    }
+
+    rows = moveElements(rows, indexX, indexY);
+
+    this.setState({ rows });
+  };
+
+  swapRowsWithColumns = () => {
+    const { rows, columns } = this.state;
+    this.setState({ rows: columns, columns: rows });
+  };
+
+  swapItems = (dragging, dropped, before) => {
+    if (dragging.type !== dropped.type) {
+      this.swapRowsWithColumns();
+    } else if (dragging.type === "column") {
+      this.swapColumns(dragging, dropped, before);
+    } else {
+      this.swapRows(dragging, dropped, before);
+    }
   };
 
   componentDidMount() {
@@ -60,7 +117,9 @@ class App extends React.Component<{}, {}> {
       d => rows.indexOf(d) === -1 && columns.indexOf(d) === -1
     );
     let rowMembers = getReferencedMembers(rows[0].referencedMembers.member);
-    let columnsMembers = getReferencedMembers(columns[0].referencedMembers.member);
+    let columnsMembers = getReferencedMembers(
+      columns[0].referencedMembers.member
+    );
 
     return (
       <div className="App">
@@ -75,6 +134,7 @@ class App extends React.Component<{}, {}> {
             <NumberGrid
               rows={rowMembers}
               columns={columnsMembers}
+              swapItems={this.swapItems}
             />
           </div>
         </DragDropContextProvider>
