@@ -12,18 +12,29 @@ import "./Offspread.css";
 
 interface OffspreadProps {
   dimensions: any[];
-  swapOffspread: Function,
-  connectDropTarget: Function
+  swapOffspread: Function;
+  connectDropTarget: Function;
+  isOver: boolean;
 }
 
 class Offspread extends React.Component<OffspreadProps, {}> {
   render() {
-    const { dimensions, swapOffspread } = this.props;
+    const { dimensions, swapOffspread, isOver } = this.props;
     const { connectDropTarget } = this.props;
 
+    const classes = ["offspreads"];
+    if (isOver) {
+      classes.push("is-over");
+    }
     return connectDropTarget(
-      <div className="offspreads">
-        {dimensions.map(d => <OffspreadItem key={d.name} dimension={d} swapOffspread={swapOffspread} />)}
+      <div className={classes.join(" ")}>
+        {dimensions.map(d => (
+          <OffspreadItem
+            key={d.name}
+            dimension={d}
+            swapOffspread={swapOffspread}
+          />
+        ))}
       </div>
     );
   }
@@ -34,7 +45,7 @@ const targetSpec: DropTargetSpec = {
     return {
       obj: {
         type: "offspread"
-      },
+      }
     };
   }
 };

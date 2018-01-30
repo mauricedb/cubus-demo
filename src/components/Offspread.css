@@ -1,17 +1,19 @@
 .offspreads {
-    font-size: 16px;
-    height: 25px;
+  font-size: 1.5em;
+  border: solid 2px white;
+}
+.offspreads.is-over {
+  border-color: red;
 }
 
 .offspread {
-    margin: 12px;
+  margin: 12px;
 }
 
 .offspread[draggable] {
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -o-user-select: none;
-  }
-  
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -o-user-select: none;
+}
