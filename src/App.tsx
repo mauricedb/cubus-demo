@@ -10,6 +10,7 @@ import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch"; // or any o
 // import FastGrid from './components/FastGrid';
 import NumberGrid from "./components/NumberGrid";
 // import Tree from './components/Tree';
+import Offspread from "./components/Offspread";
 
 // const  data = require('./stocks.json');
 // const treeData = require('./tree.json');
@@ -21,31 +22,61 @@ import NumberGrid from "./components/NumberGrid";
 
 const touchBackend = MultiBackend(HTML5toTouch);
 
-class App extends React.Component<{}, {}> {
-  // state = {
-  //   count: 0,
-  //   treeData: []
-  // };
-  reportScrollEvent = (e: any) => {
-    // console.log(e)
+const viewSampleDefinition = require("./ViewSampleDefinition.json");
+const originalDimensions = viewSampleDefinition.dimensions.dimension;
+
+function getReferencedMembers(member: any, memberNames: Array<string> = []): Array<string> {
+  if (typeof (member) === 'undefined'){
+      return memberNames;
   }
 
-  
+  if (member.constructor === Array) {
+      for (let i = 0; i < member.length; i++) {
+          getReferencedMembers(member[i], memberNames);
+      }
+  } else {
+      memberNames.push(member)
+      getReferencedMembers(member.member, memberNames);
+  }
+
+  return memberNames;
+
+}
+class App extends React.Component<{}, {}> {
+  state = {
+    dimensions: originalDimensions,
+    rows: [originalDimensions[0]],
+    columns: [originalDimensions[1]]
+  };
+
   componentDidMount() {
     fetch("/tree.json")
       .then(rsp => rsp.json())
       .then(data => this.setState({ treeData: data }));
   }
   render() {
+    const { dimensions, rows, columns } = this.state;
+    const offspread = dimensions.filter(
+      d => rows.indexOf(d) === -1 && columns.indexOf(d) === -1
+    );
+    let rowMembers = getReferencedMembers(rows[0].referencedMembers.member);
+    let columnsMembers = getReferencedMembers(columns[0].referencedMembers.member);
+
     return (
-      <div className="App" onScroll={this.reportScrollEvent}>
+      <div className="App">
         {/* <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Click me
         </button> */}
         {/* <SimpleGrid data={data} /> */}
         {/* <FastGrid data={data} /> */}
         <DragDropContextProvider backend={touchBackend}>
-          <NumberGrid />
+          <div>
+            <Offspread dimensions={offspread} />
+            <NumberGrid
+              rows={rowMembers}
+              columns={columnsMembers}
+            />
+          </div>
         </DragDropContextProvider>
         {/* <Tree data={this.state.treeData} /> */}
       </div>

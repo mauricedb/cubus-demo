@@ -2,51 +2,55 @@ import * as React from "react";
 import { MultiGrid, GridCellProps } from "react-virtualized";
 import ColumnHeader from "./ColumnHeader";
 import RowHeader from "./RowHeader";
-const viewSampleDefinition = require("./../ViewSampleDefinition.json");
+// const viewSampleDefinition = require("./../ViewSampleDefinition.json");
 
-const initialColumns: string[] = [];
-const initialRows: string[] = [];
+// const initialColumns: string[] = [];
+// const initialRows: string[] = [];
 
-viewSampleDefinition.dimensions.dimension[0].referencedMembers.member[0].member
-  .map((m: any) => m.member)
-  .forEach((element: any) => {
-    element.forEach((el: any) => {
-      initialRows.push(el.name);
-    });
-  });
+// viewSampleDefinition.dimensions.dimension[0].referencedMembers.member[0].member
+//   .map((m: any) => m.member)
+//   .forEach((element: any) => {
+//     element.forEach((el: any) => {
+//       initialRows.push(el.name);
+//     });
+//   });
 
-viewSampleDefinition.dimensions.dimension[1].referencedMembers.member[0].member
-  .map((m: any) => m.member)
-  .forEach((element: any) => {
-    element.forEach((el: any) => {
-      initialColumns.push(el.name);
-    });
-  });
+// viewSampleDefinition.dimensions.dimension[1].referencedMembers.member[0].member
+//   .map((m: any) => m.member)
+//   .forEach((element: any) => {
+//     element.forEach((el: any) => {
+//       initialColumns.push(el.name);
+//     });
+//   });
 
-function moveElements(data, old_index, new_index) {
-  if (new_index >= data.length) {
-    var k = new_index - data.length;
-    while (k-- + 1) {
-      data.push(undefined);
-    }
-  }
-  data.splice(new_index, 0, data.splice(old_index, 1)[0]);
-  return data;
+// function moveElements(data, old_index, new_index) {
+//   if (new_index >= data.length) {
+//     var k = new_index - data.length;
+//     while (k-- + 1) {
+//       data.push(undefined);
+//     }
+//   }
+//   data.splice(new_index, 0, data.splice(old_index, 1)[0]);
+//   return data;
+// }
+
+interface FastGridProps {
+  rows: any[];
+  columns: any[];
+
 }
 
-interface FastGridProps {}
-
 interface FastGridState {
-  columnWidths: number[];
-  columns: string[];
-  rows: string[];
+  // columnWidths: number[];
+  // columns: string[];
+  // rows: string[];
 }
 
 class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   state = {
-    columnWidths: [250, ...initialColumns.map(c => 100)],
-    columns: initialColumns,
-    rows: initialRows
+    // columnWidths: [250, ...initialColumns.map(c => 100)],
+    // columns: initialColumns,
+    // rows: initialRows
   };
 
   swapItems = (dragging, dropped, before) => {
@@ -60,46 +64,47 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   };
 
   swapColumns = (dragging, dropped, before) => {
-    let columns = [...this.state.columns];
-    const indexX = columns.indexOf(dragging.caption);
-    let indexY = columns.indexOf(dropped.caption);
+    // let columns = [...this.state.columns];
+    // const indexX = columns.indexOf(dragging.caption);
+    // let indexY = columns.indexOf(dropped.caption);
 
-    if (!before) {
-      indexY++;
-    }
+    // if (!before) {
+    //   indexY++;
+    // }
 
-    columns = moveElements(columns, indexX, indexY);
+    // columns = moveElements(columns, indexX, indexY);
 
-    this.setState({ columns });
+    // this.setState({ columns });
   };
 
   swapRows = (dragging, dropped, before) => {
-    let rows = [...this.state.rows];
-    const indexX = rows.indexOf(dragging.caption);
-    let indexY = rows.indexOf(dropped.caption);
+    // let rows = [...this.state.rows];
+    // const indexX = rows.indexOf(dragging.caption);
+    // let indexY = rows.indexOf(dropped.caption);
 
-    if (!before) {
-      indexY++;
-    }
+    // if (!before) {
+    //   indexY++;
+    // }
 
-    rows = moveElements(rows, indexX, indexY);
+    // rows = moveElements(rows, indexX, indexY);
 
-    this.setState({ rows });
+    // this.setState({ rows });
   };
 
   swapRowsWithColumns = () => {
-    const { rows, columns } = this.state;
+    const { rows, columns } = this.props;
     this.setState({ rows: columns, columns: rows });
   };
 
   cellRenderer = (e: GridCellProps) => {
-    const { columns, rows } = this.state;
+    const { columns, rows } = this.props;
 
     if (e.rowIndex === 0) {
+      const caption = e.columnIndex === 0 ? '' : columns[e.columnIndex - 1].name;
       return (
         <ColumnHeader
           key={e.key}
-          caption={columns[e.columnIndex - 1]}
+          caption={caption}
           style={e.style}
           swapMember={this.swapItems}
         />
@@ -111,7 +116,7 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
         <RowHeader
           key={e.key}
           style={e.style}
-          caption={rows[e.rowIndex - 1]}
+          caption={rows[e.rowIndex - 1].name}
           swapMember={this.swapItems}
         />
       );
@@ -125,16 +130,16 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   };
 
   render() {
-    const { columns, rows } = this.state;
+    const { columns, rows } = this.props;
 
     return (
       <div>
         <MultiGrid
           cellRenderer={this.cellRenderer}
-          height={300}
-          width={1200}
+          height={window.innerHeight - 25}
+          width={window.innerWidth}
           rowHeight={20}
-          columnWidth={({ index }) => this.state.columnWidths[index]}
+          columnWidth={({ index }) => 200}
           rowCount={rows.length + 1}
           columnCount={columns.length + 1}
           fixedRowCount={1}
