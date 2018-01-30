@@ -21,7 +21,9 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
 
     if (e.rowIndex === 0) {
       const caption =
-        e.columnIndex === 0 ? "" : columns[e.columnIndex - 1].name;
+        e.columnIndex < rows.length
+          ? ""
+          : columns[e.columnIndex - rows.length].name;
       return (
         <ColumnHeader
           key={e.key}
@@ -32,12 +34,21 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
       );
     }
 
-    if (e.columnIndex === 0) {
+    if (e.columnIndex < rows.length) {
+      let row;
+      if (e.columnIndex === 0) {
+        const index = Math.floor((e.rowIndex - 1) / rows[1].length)
+        row = rows[0][index];
+      } else if (e.columnIndex === 1){
+        const index = Math.floor((e.rowIndex - 1) % rows[1].length)
+        row = rows[1][index];
+      }
+
       return (
         <RowHeader
           key={e.key}
           style={e.style}
-          caption={rows[e.rowIndex - 1].name}
+          caption={row.name}
           swapMember={swapItems}
         />
       );
@@ -50,9 +61,13 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
     );
   };
 
+  getRowCount(rows) {
+    return rows[0].length * rows[1].length;
+  }
   render() {
     const { columns, rows } = this.props;
-
+    const rowCount = this.getRowCount(rows);
+    console.log(rowCount);
     return (
       <div>
         <MultiGrid
@@ -61,12 +76,12 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
           width={window.innerWidth}
           rowHeight={20}
           columnWidth={({ index }) => 200}
-          rowCount={rows.length + 1}
-          columnCount={columns.length + 1}
-          fixedRowCount={1}
-          fixedColumnCount={1}
-          styleTopLeftGrid={{ width: 250 }}
-          styleBottomLeftGrid={{ width: 250 }}
+          rowCount={rowCount}
+          columnCount={columns.length + rows.length}
+          fixedRowCount={columns.length}
+          fixedColumnCount={rows.length}
+          styleTopLeftGrid={{ width: rows.length * 200 }}
+          styleBottomLeftGrid={{ width: rows.length * 200 }}
         />
       </div>
     );

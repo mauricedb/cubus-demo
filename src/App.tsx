@@ -59,8 +59,8 @@ function moveElements(data, old_index, new_index) {
 class App extends React.Component<{}, {}> {
   state = {
     dimensions: originalDimensions,
-    rows: [originalDimensions[0]],
-    columns: [originalDimensions[1]]
+    rows: [originalDimensions[0], originalDimensions[1]],
+    columns: [originalDimensions[2]]
   };
 
   swapColumns = (dragging, dropped, before) => {
@@ -126,7 +126,11 @@ class App extends React.Component<{}, {}> {
     const offspread = dimensions.filter(
       d => rows.indexOf(d) === -1 && columns.indexOf(d) === -1
     );
-    let rowMembers = getReferencedMembers(rows[0].referencedMembers.member);
+
+    const rowMembers = rows.map(row =>
+      getReferencedMembers(row.referencedMembers.member)
+    );
+    // let rowMembers = getReferencedMembers(rows[0].referencedMembers.member);
     let columnsMembers = getReferencedMembers(
       columns[0].referencedMembers.member
     );
