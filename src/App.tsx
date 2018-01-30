@@ -100,7 +100,7 @@ class App extends React.Component<{}, {}> {
   swapItems = (dragging, dropped, before) => {
     if (dropped.type === "offspread") {
       const { rows, columns } = this.state;
-      console.log("OffSpread", dragging.type);
+      // console.log("OffSpread", dragging.type);
       if (dragging.type === "row") {
         const newRows = rows.filter(r => r !== dragging.dimension);
         this.setState({ rows: newRows });
