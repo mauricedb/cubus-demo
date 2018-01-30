@@ -73,6 +73,7 @@ let sourceSpec: DragSourceSpec<RowHeaderProps> = {
   beginDrag: (props: RowHeaderProps) => ({
     obj: {
       type: "row",
+      dimension: props.dimension,
       caption: props.caption
     },
     swapMember: props.swapMember

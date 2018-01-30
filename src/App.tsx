@@ -99,7 +99,17 @@ class App extends React.Component<{}, {}> {
   };
 
   swapItems = (dragging, dropped, before) => {
-    if (dragging.type !== dropped.type) {
+    if (dropped.type === "offspread") {
+      const { rows, columns } = this.state;
+      console.log("OffSpread", dragging.type);
+      if (dragging.type === "row") {
+        const newRows = rows.filter(r => r !== dragging.dimension);
+        this.setState({ rows: newRows });
+      } else {
+        const newColumns = columns.filter(r => r !== dragging.dimension);
+        this.setState({ columns: newColumns });
+      }
+    } else if (dragging.type !== dropped.type) {
       this.swapRowsWithColumns();
     } else if (dragging.type === "column") {
       this.swapColumns(dragging, dropped, before);
@@ -109,8 +119,6 @@ class App extends React.Component<{}, {}> {
   };
 
   swapOffspread = (dragging, dropped, before) => {
-    console.log(dragging, dropped, before);
-
     if (dropped.type === "row") {
       const { rows } = this.state;
       const newRows = rows.map(row => {

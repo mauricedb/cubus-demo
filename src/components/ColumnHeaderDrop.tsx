@@ -17,7 +17,6 @@ class  ColumnHeaderDrop extends React.Component<any, any> {
 
 const targetSpec: DropTargetSpec = {
   hover(props: any, monitor: DropTarget, component: any) {
-    console.log(props, monitor);
     if (process.env.NODE_ENV === "production") {
       console.log(props, monitor);
     }

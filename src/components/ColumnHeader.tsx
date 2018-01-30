@@ -77,6 +77,7 @@ let sourceSpec: DragSourceSpec<ColumnHeaderProps> = {
   beginDrag: (props: ColumnHeaderProps) => ({
     obj: {
       type: "column",
+      dimension: props.dimension,
       caption: props.caption
     },
     swapMember: props.swapMember
