@@ -7,11 +7,16 @@ import {
   DragSourceCollector,
   DragSourceConnector,
   DragSourceMonitor,
-  ConnectDropTarget
+  ConnectDropTarget,
+  DropTarget,
+  DropTargetConnector,
+  DropTargetMonitor,
+  DropTargetSpec
 } from "react-dnd";
 
 import AppState from "../AppState";
 import ColumnHeaderDrop from "./ColumnHeaderDrop";
+import Splitter from "./Splitter";
 
 interface ColumnHeaderProps {
   connectDragSource: ConnectDragSource;
@@ -25,6 +30,8 @@ interface ColumnHeaderProps {
   dimension: any;
   column: any;
   appState: AppState;
+  updateColumnWidth: Function;
+  columnIndex: number
 }
 
 interface ColumnHeaderState {}
@@ -33,6 +40,8 @@ class ColumnHeader extends React.PureComponent<
   ColumnHeaderProps,
   ColumnHeaderState
 > {
+  el: any = null;
+
   componentDidMount() {
     const img = new Image();
     img.src = "http://netget.ca/wp-content/uploads/2016/10/cat-hungry-icon.png";
@@ -48,7 +57,9 @@ class ColumnHeader extends React.PureComponent<
       isOver,
       dimension,
       column,
-      appState
+      appState,
+      connectDropTarget,
+      updateColumnWidth,
     } = this.props;
 
     const classes = ["header"];
@@ -59,8 +70,12 @@ class ColumnHeader extends React.PureComponent<
       classes.push("is-dragging");
     }
 
-    const markup = (
-      <div className={classes.join(" ")} style={style}>
+    const markup = connectDropTarget(
+      <div
+        ref={el => (this.el = el)}
+        className={classes.join(" ")}
+        style={style}
+      >
         <ColumnHeaderDrop
           className="drop-left"
           caption={caption}
@@ -69,6 +84,9 @@ class ColumnHeader extends React.PureComponent<
           before={true}
         />
         {caption}
+
+        <Splitter updateColumnWidth={updateColumnWidth} />
+
         <ColumnHeaderDrop
           className="drop-right"
           caption={caption}
@@ -78,7 +96,7 @@ class ColumnHeader extends React.PureComponent<
         />
       </div>
     );
-    
+
     if (appState == AppState.view) {
       return markup;
     }
@@ -120,6 +138,39 @@ let sourceCollector: DragSourceCollector = (
   };
 };
 
+const targetSpec: DropTargetSpec = {
+  hover(props, monitor, component){
+    const differenceFromInitialOffset = monitor.getDifferenceFromInitialOffset();
+    console.log('hover', differenceFromInitialOffset)
+  },
+
+  drop(props, monitor, component) {
+    const differenceFromInitialOffset = monitor.getDifferenceFromInitialOffset();
+    const columnIndex = props.columnIndex - 1;
+
+    return {
+      obj: {
+        differenceFromInitialOffset,
+        columnIndex
+      }
+    };
+  }
+};
+
+const targetCollector: DropTargetConnector = (
+  connect: DropTargetConnector,
+  monitor: DropTargetMonitor
+) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+  canDrop: monitor.canDrop()
+});
+
+targetSpec.toString();
+targetCollector.toString();
+
+// export default DragSource("header-node", sourceSpec, sourceCollector)(ColumnHeader)
+
 export default DragSource("header-node", sourceSpec, sourceCollector)(
-  ColumnHeader
+  DropTarget("splitter-node", targetSpec, targetCollector)(ColumnHeader)
 );

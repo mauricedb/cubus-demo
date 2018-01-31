@@ -108,8 +108,13 @@
 .splitter {
   position: absolute;
   right: 0;
-  cursor: ew-resize;
-  padding: 0 3px;
+  /* cursor: ew-resize; */
+  /* padding: 0 3px; */
+  background-color: green;
+  display: inline-block;
+  width: 10px;
+  height: 100%;
+  z-index: 10;
 }
 
 .selected {

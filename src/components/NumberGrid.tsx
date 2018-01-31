@@ -16,13 +16,53 @@ interface FastGridProps {
   appState: AppState;
 }
 
-interface FastGridState {}
+interface FastGridState {
+  columnWidths: number[];
+}
 
 class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   rowStartIndex = 0;
+  grid: any = null;
 
   state = {
-    // columnWidths: [250, ...initialColumns.map(c => 100)],
+    columnWidths: [
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200
+    ]
+  };
+
+  updateColumnWidth = e => {
+    const { columnWidths } = this.state;
+
+    const { differenceFromInitialOffset, columnIndex } = e.obj;
+    console.log("updateColumnWidth", differenceFromInitialOffset.x);
+
+    let width = columnWidths[columnIndex];
+    width += differenceFromInitialOffset.x;
+    columnWidths[columnIndex] = width;
+
+    // console.table(columnWidths);
+
+    if (this.grid) {
+      this.grid.invalidateCellSizeAfterRender();
+    }
+
+    this.setState({ columnWidths: [...columnWidths] });
   };
 
   cellRangeRenderer = e => {
@@ -59,6 +99,8 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
           swapMember={swapItems}
           dimension={dimension}
           column={column}
+          columnIndex={e.columnIndex}
+          updateColumnWidth={this.updateColumnWidth}
         />
       );
     }
@@ -113,26 +155,44 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   getRowCount(rows) {
     return rows.reduce((p, c) => c.length * p, 1);
   }
+
+  componentDidMount() {
+    const { columnWidths } = this.state;
+
+    const { columns, rows } = this.props;
+    const columnCount = this.getRowCount(columns) + rows.length;
+
+    columnWidths.length = columnCount;
+
+    this.setState({ columnWidths: [...columnWidths] });
+  }
+
   render() {
+    const { columnWidths } = this.state;
     const { columns, rows } = this.props;
     const rowCount = this.getRowCount(rows) + columns.length;
     const columnCount = this.getRowCount(columns) + rows.length;
-    // console.log(columnCount);
+    console.table(columnWidths);
+
     return (
       <div>
         <MultiGrid
+          ref={el => (this.grid = el)}
           cellRangeRenderer={this.cellRangeRenderer}
           cellRenderer={this.cellRenderer}
           height={window.innerHeight - 40}
           width={window.innerWidth}
           rowHeight={20}
-          columnWidth={({ index }) => 200}
+          columnWidth={({ index }) => {
+            console.log("columnWidth", index, columnWidths[index]);
+            return columnWidths[index];
+          }}
           rowCount={rowCount}
           columnCount={columnCount}
           fixedRowCount={columns.length}
           fixedColumnCount={rows.length}
-          styleTopLeftGrid={{ width: rows.length * 200 }}
-          styleBottomLeftGrid={{ width: rows.length * 200 }}
+          styleTopLeftGrid={{ width: columnWidths[0] + columnWidths[1] }}
+          styleBottomLeftGrid={{ width: columnWidths[0] + columnWidths[1] }}
         />
       </div>
     );

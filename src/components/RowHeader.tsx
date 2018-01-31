@@ -153,6 +153,8 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
       // row
     } = this.props;
 
+    console.log(style)
+    
     const classes = ["header"];
     if (isOver) {
       classes.push("is-over");
