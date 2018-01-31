@@ -9,19 +9,25 @@ import {
   // ConnectDropTarget
 } from "react-dnd";
 
+import AppState from "../AppState";
+
 interface OffspreadItemProps {
   dimension: any;
   connectDragSource: ConnectDragSource;
   swapOffspread: Function;
+  appState: AppState;
 }
 
 class OffspreadItem extends React.Component<OffspreadItemProps, {}> {
   render() {
-    const { dimension, connectDragSource } = this.props;
-    
-    return connectDragSource(
-      <span className="offspread">{dimension.name}</span>
-    );
+    const { dimension, connectDragSource, appState } = this.props;
+
+    const markup = <span className="offspread">{dimension.name}</span>;
+
+    if (appState == AppState.view) {
+      return markup;
+    }
+    return connectDragSource(markup);
   }
 }
 
@@ -29,10 +35,10 @@ let sourceSpec: DragSourceSpec<OffspreadItemProps> = {
   beginDrag: (props: OffspreadItemProps) => ({
     obj: {
       type: "offspread",
-      dimension: props.dimension,
+      dimension: props.dimension
     },
     swapOffspread: props.swapOffspread
-}),
+  }),
 
   endDrag(props: OffspreadItemProps, monitor: DragSourceMonitor) {
     const item = monitor.getItem();

@@ -18,10 +18,10 @@ class AppStateSwitch extends React.Component<AppStateSwitchProps, {}> {
             name="mode"
             type="radio"
             value={1}
-            checked={appState === AppState.default}
-            onChange={() => setAppState(AppState.default)}
+            checked={appState === AppState.view}
+            onChange={() => setAppState(AppState.view)}
           />
-          Default
+          View
         </label>
         <label>
           <input

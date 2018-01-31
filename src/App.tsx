@@ -70,7 +70,7 @@ class App extends React.Component<{}, {}> {
     dimensions: originalDimensions,
     rows: [originalDimensions[0], originalDimensions[1]],
     columns: [originalDimensions[2], originalDimensions[3]],
-    appState: AppState.default
+    appState: AppState.view
   };
 
   swapColumns = (dragging, dropped, before) => {
@@ -193,7 +193,7 @@ class App extends React.Component<{}, {}> {
         {/* <FastGrid data={data} /> */}
         <DragDropContextProvider backend={touchBackend} >
           <div>
-            <ContextMenuProvider id="menu_id" event="onClick">
+            <ContextMenuProvider id="menu_id">
               <Offspread
                 appState={appState}
                 dimensions={offspread}

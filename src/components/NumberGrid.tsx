@@ -54,6 +54,7 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
         <ColumnHeader
           key={e.key}
           caption={caption}
+          appState={appState}
           style={e.style}
           swapMember={swapItems}
           dimension={dimension}

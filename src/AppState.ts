@@ -1,5 +1,5 @@
 enum AppState {
-    default,
+    view,
     design
 }
 

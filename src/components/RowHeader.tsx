@@ -1,7 +1,7 @@
 import * as React from "react";
-import Tappable from "react-tappable";
+// import Tappable from "react-tappable";
 
-import { ContextMenu, Item, Separator, IconFont } from "react-contexify";
+import { ContextMenu, Item, Separator } from "react-contexify";
 import "react-contexify/dist/ReactContexify.min.css";
 
 import { Modal, Button } from "react-bootstrap";
@@ -46,19 +46,12 @@ interface RowHeaderState {
   text: string;
 }
 
-const MyAwesomeMenu = () => (
+const MyAwesomeMenu = ({ showMemberInfo }) => (
   <ContextMenu id="menu_id">
-    <Item leftIcon={<IconFont className="fa fa-plus" />}>Add</Item>
-    <Item
-      leftIcon={<IconFont className="material-icons">remove_circle</IconFont>}
-    >
-      Remove
-    </Item>
-    <Item>
-      <IconFont className="fa fa-scissors" />cut
-    </Item>
+    <Item onClick={showMemberInfo}>Member information</Item>
     <Separator />
-    <Item disabled>Paste</Item>
+    <Item>Switch to view mode</Item>
+    <Item>Switch to design mode</Item>
   </ContextMenu>
 );
 
@@ -81,7 +74,11 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
       if (oldState.showModal || oldState.showContextMenu) {
         return oldState;
       }
-      return { showContextMenu: true, text: "showContextMenu" };
+      return {
+        showContextMenu: true,
+        showModal: false,
+        text: "showContextMenu"
+      };
     });
   }
 
@@ -89,24 +86,31 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
     this.setState({ showModal: false, text: "" });
   };
 
-  showMemberSelect() {
+  showMemberSelect = () => {
     this.setState(oldState => {
-      if (oldState.showModal || oldState.showContextMenu) {
-        return oldState;
-      }
-      return { showModal: true, text: "showMemberSelect" };
+      // if (oldState.showModal || oldState.showContextMenu) {
+      //   return oldState;
+      // }
+      return {
+        showModal: true,
+        showContextMenu: false,
+        text: "showMemberSelect"
+      };
     });
-  }
+  };
 
   // onClick = e => {
   //   console.log("Click");
   // };
 
-  // onContextMenu = e => {
-  //   console.log("onContextMenu");
-  //   e.preventDefault();
-  //   this.showContextMenu();
-  // };
+  onContextMenu = e => {
+    const { appState } = this.props;
+    e.preventDefault();
+
+    if (appState === AppState.view) {
+      this.showContextMenu();
+    }
+  };
 
   // onPress = e => {
   //   console.log("onPress");
@@ -116,13 +120,11 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   onTap = e => {
     const { appState } = this.props;
 
-    if (appState === AppState.default) {
+    if (appState === AppState.design) {
       this.showMemberSelect();
-    } else if (appState === AppState.design) {
-      this.showContextMenu();
     }
 
-    console.log("onTap");
+    // console.log("onTap");
     // if (e.button === 2) {
     //   // e.preventDefault()
     // } else {
@@ -136,7 +138,7 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   }
 
   render() {
-    const { showModal, text, showContextMenu } = this.state;
+    const { showModal, text } = this.state;
 
     const {
       caption,
@@ -145,8 +147,8 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
       isDragging,
       isOver,
       connectDropTarget,
-      clientOffset
-      // appState
+      clientOffset,
+      appState
       // dimension,
       // row
     } = this.props;
@@ -175,40 +177,43 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
       }
     }
 
-    console.log(showContextMenu)
+    const markup = (
+      <div
+        ref={el => (this.el = el)}
+        className={classes.join(" ")}
+        style={style}
+        onContextMenu={this.onContextMenu}
+      >
+        {/* <Tappable onTap={this.onTap}></Tappable> */}
+        {caption}
 
-    return connectDropTarget(
-      connectDragSource(
-        <div
-          ref={el => (this.el = el)}
-          className={classes.join(" ")}
-          style={style}
-          // onContextMenu={this.onContextMenu}
-          // onClick={this.onClick}
-          // onContextMenu={this.onContextMenu}
-        >
-          <Tappable onTap={this.onTap}>{caption}</Tappable>
+        {/* {appState == AppState.view && (
+)}*/}
+        <MyAwesomeMenu showMemberInfo={this.showMemberSelect} />
 
-          {showContextMenu && <MyAwesomeMenu />}
+        <Modal show={showModal} onHide={this.handleHide} animation={false}>
+          <Modal.Header>
+            <Modal.Title>Member information</Modal.Title>
+          </Modal.Header>
 
-          <Modal show={showModal} onHide={this.handleHide} animation={false}>
-            <Modal.Header>
-              <Modal.Title>Member information</Modal.Title>
-            </Modal.Header>
+          <Modal.Body>
+            <div>
+              {text} for {caption}
+            </div>
+          </Modal.Body>
 
-            <Modal.Body>
-              <div>
-                {text} for {caption}
-              </div>
-            </Modal.Body>
-
-            <Modal.Footer>
-              <Button onClick={this.handleHide}>Close</Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      )
+          <Modal.Footer>
+            <Button onClick={this.handleHide}>Close</Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     );
+
+    if (appState == AppState.view){
+      return markup;
+    }
+    
+    return connectDropTarget(connectDragSource(markup));
   }
 }
 

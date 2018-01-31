@@ -34,10 +34,11 @@ class Offspread extends React.Component<OffspreadProps, {}> {
       classes.push("design-mode");
     }
 
-    return connectDropTarget(
+    const markup = (
       <div className={classes.join(" ")}>
         {dimensions.map(d => (
           <OffspreadItem
+            appState={appState}
             key={d.name}
             dimension={d}
             swapOffspread={swapOffspread}
@@ -45,6 +46,11 @@ class Offspread extends React.Component<OffspreadProps, {}> {
         ))}
       </div>
     );
+
+    if (appState == AppState.view) {
+      return markup;
+    }
+    return connectDropTarget(markup);
   }
 }
 

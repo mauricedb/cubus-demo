@@ -10,6 +10,7 @@ import {
   ConnectDropTarget
 } from "react-dnd";
 
+import AppState from "../AppState";
 import ColumnHeaderDrop from "./ColumnHeaderDrop";
 
 interface ColumnHeaderProps {
@@ -23,6 +24,7 @@ interface ColumnHeaderProps {
   isOver: boolean;
   dimension: any;
   column: any;
+  appState: AppState;
 }
 
 interface ColumnHeaderState {}
@@ -45,7 +47,8 @@ class ColumnHeader extends React.PureComponent<
       isDragging,
       isOver,
       dimension,
-      column
+      column,
+      appState
     } = this.props;
 
     const classes = ["header"];
@@ -55,7 +58,8 @@ class ColumnHeader extends React.PureComponent<
     if (isDragging) {
       classes.push("is-dragging");
     }
-    return connectDragSource(
+
+    const markup = (
       <div className={classes.join(" ")} style={style}>
         <ColumnHeaderDrop
           className="drop-left"
@@ -74,6 +78,12 @@ class ColumnHeader extends React.PureComponent<
         />
       </div>
     );
+    
+    if (appState == AppState.view) {
+      return markup;
+    }
+
+    return connectDragSource(markup);
   }
 }
 
