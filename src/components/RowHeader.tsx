@@ -1,6 +1,9 @@
 import * as React from "react";
 import Tappable from "react-tappable";
 
+import { ContextMenu, Item, Separator, IconFont } from "react-contexify";
+import "react-contexify/dist/ReactContexify.min.css";
+
 import { Modal, Button } from "react-bootstrap";
 
 import {
@@ -36,8 +39,25 @@ interface RowHeaderProps {
 
 interface RowHeaderState {
   showModal: boolean;
+  showContextMenu: boolean;
   text: string;
 }
+
+const MyAwesomeMenu = () => (
+  <ContextMenu id="menu_id">
+    <Item leftIcon={<IconFont className="fa fa-plus" />}>Add</Item>
+    <Item
+      leftIcon={<IconFont className="material-icons">remove_circle</IconFont>}
+    >
+      Remove
+    </Item>
+    <Item>
+      <IconFont className="fa fa-scissors" />cut
+    </Item>
+    <Separator />
+    <Item disabled>Paste</Item>
+  </ContextMenu>
+);
 
 class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   el: HTMLElement | null = null;
@@ -49,15 +69,16 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
     isBottom: false,
     isCenter: false,
     showModal: false,
+    showContextMenu: false,
     text: ""
   };
 
   showContextMenu() {
     this.setState(oldState => {
-      if (oldState.showModal) {
+      if (oldState.showModal || oldState.showContextMenu) {
         return oldState;
       }
-      return { showModal: true, text: "showContextMenu" };
+      return { showContextMenu: true, text: "showContextMenu" };
     });
   }
 
@@ -67,7 +88,7 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
 
   showMemberSelect() {
     this.setState(oldState => {
-      if (oldState.showModal) {
+      if (oldState.showModal || oldState.showContextMenu) {
         return oldState;
       }
       return { showModal: true, text: "showMemberSelect" };
@@ -106,7 +127,7 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   }
 
   render() {
-    const { showModal, text } = this.state;
+    const { showModal, text, showContextMenu } = this.state;
 
     const {
       caption,
@@ -158,13 +179,17 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
             {caption}
           </Tappable>
 
+          {showContextMenu && <MyAwesomeMenu />}
+
           <Modal show={showModal} onHide={this.handleHide} animation={false}>
             <Modal.Header>
               <Modal.Title>Member information</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-              <div>{text} for {caption}</div>
+              <div>
+                {text} for {caption}
+              </div>
             </Modal.Body>
 
             <Modal.Footer>

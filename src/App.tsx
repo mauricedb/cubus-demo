@@ -5,6 +5,7 @@ import { DragDropContextProvider } from "react-dnd";
 // import TouchBackend from "react-dnd-touch-backend";
 import MultiBackend from "react-dnd-multi-backend";
 import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch"; // or any other pipeline
+import { ContextMenuProvider } from "react-contexify";
 
 // import SimpleGrid from './components/SimpleGrid';
 // import FastGrid from './components/FastGrid';
@@ -187,16 +188,17 @@ class App extends React.Component<{}, {}> {
         {/* <FastGrid data={data} /> */}
         <DragDropContextProvider backend={touchBackend}>
           <div>
-            <Offspread
-              dimensions={offspread}
-              swapOffspread={this.swapOffspread}
-            />
-            <NumberGrid
-              rows={rowMembers}
-              columns={columnsMembers}
-              swapItems={this.swapItems}
-            />
-
+            <ContextMenuProvider id="menu_id">
+              <Offspread
+                dimensions={offspread}
+                swapOffspread={this.swapOffspread}
+              />
+              <NumberGrid
+                rows={rowMembers}
+                columns={columnsMembers}
+                swapItems={this.swapItems}
+              />
+            </ContextMenuProvider>
           </div>
         </DragDropContextProvider>
         {/* <Tree data={this.state.treeData} /> */}

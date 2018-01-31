@@ -7,6 +7,7 @@
     "create-react-class": "^15.6.3",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
+    "react-contexify": "^2.1.4",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
     "react-dnd-multi-backend": "^3.1.0",
