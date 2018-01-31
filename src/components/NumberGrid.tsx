@@ -23,12 +23,9 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   };
 
   cellRangeRenderer = e => {
-    this.rowStartIndex = e.rowStartIndex;
+    this.rowStartIndex = e.visibleRowIndices.start;
 
     const children = defaultCellRangeRenderer(e);
-    // console.log(e.rowStartIndex)
-
-    // this.rowStartIndex = 999999999;
 
     return children;
   };
