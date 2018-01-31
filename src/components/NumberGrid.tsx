@@ -122,7 +122,7 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
         <MultiGrid
           cellRangeRenderer={this.cellRangeRenderer}
           cellRenderer={this.cellRenderer}
-          height={window.innerHeight - 35}
+          height={window.innerHeight - 40}
           width={window.innerWidth}
           rowHeight={20}
           columnWidth={({ index }) => 200}
