@@ -45,18 +45,21 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
     isTop: false,
     isBottom: false,
     isCenter: false,
-    showModal: false
+    showModal: false,
+    text: ''
   };
 
   showContextMenu() {
-    this.setState({ showModal: true });
+    this.setState({ showModal: true, text:'showContextMenu' });
   }
 
   handleHide = () => {
     this.setState({ showModal: false });
   };
 
-  showMemberSelect() {}
+  showMemberSelect() {
+    this.setState({ showModal: true, text:'showMemberSelect' });
+  }
 
   onClick = e => {
     console.log("Click");
@@ -90,7 +93,7 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   }
 
   render() {
-    const { showModal } = this.state;
+    const { showModal, text } = this.state;
 
     const {
       caption,
@@ -150,7 +153,7 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
               <Modal.Title>Modal title</Modal.Title>
             </Modal.Header>
 
-            <Modal.Body>One fine body...</Modal.Body>
+            <Modal.Body>{text}</Modal.Body>
 
             <Modal.Footer>
               <Button>Close</Button>
