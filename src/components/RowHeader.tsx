@@ -1,5 +1,7 @@
 import * as React from "react";
-// import RowHeaderDrop from "./RowHeaderDrop";
+import Tappable from "react-tappable";
+
+import { Modal, Button } from "react-bootstrap";
 
 import {
   ConnectDragSource,
@@ -42,7 +44,32 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
     isRight: false,
     isTop: false,
     isBottom: false,
-    isCenter: false
+    isCenter: false,
+    showModal: false
+  };
+
+  showContextMenu() {
+    this.setState({showModal: true});
+  }
+
+  handleHide = () => {
+    this.setState({showModal: false});
+  }
+
+  
+  showMemberSelect() {}
+
+  onPress = e => {
+    console.log('onPress')
+    this.showContextMenu();
+  };
+
+  onTap = e => {
+    if (e.button === 2) {
+      this.showContextMenu();
+    } else {
+      this.showMemberSelect();
+    }
   };
 
   componentDidMount() {
@@ -51,7 +78,10 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
     img.onload = () => this.props.connectDragPreview(img);
   }
 
+
   render() {
+    const {showModal} = this.state;
+
     const {
       caption,
       style,
@@ -95,7 +125,22 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
           className={classes.join(" ")}
           style={style}
         >
-          {caption}
+          <Tappable onPress={this.onPress} onTap={this.onTap}>
+            {caption}
+          </Tappable>
+
+          <Modal show={showModal} onHide={this.handleHide}  animation={false}>
+            <Modal.Header>
+              <Modal.Title>Modal title</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>One fine body...</Modal.Body>
+
+            <Modal.Footer>
+              <Button>Close</Button>
+              <Button bsStyle="primary">Save changes</Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       )
     );

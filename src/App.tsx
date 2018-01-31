@@ -135,7 +135,7 @@ class App extends React.Component<{}, {}> {
         this.setState({ rows: newRows });
       } else {
         const newRows = rows.map(row => {
-          if (row == dropped.dimension) {
+          if (row === dropped.dimension) {
             return dragging.dimension;
           }
           return row;
@@ -145,7 +145,7 @@ class App extends React.Component<{}, {}> {
     } else {
       const { columns } = this.state;
       const newColumns = columns.map(column => {
-        if (column == dropped.dimension) {
+        if (column === dropped.dimension) {
           return dragging.dimension;
         }
         return column;
@@ -179,7 +179,7 @@ class App extends React.Component<{}, {}> {
       );
 
     return (
-      <div className="App">
+      <div className="App container">
         {/* <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Click me
         </button> */}
@@ -196,6 +196,7 @@ class App extends React.Component<{}, {}> {
               columns={columnsMembers}
               swapItems={this.swapItems}
             />
+
           </div>
         </DragDropContextProvider>
         {/* <Tree data={this.state.treeData} /> */}

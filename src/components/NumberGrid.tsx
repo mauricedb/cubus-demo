@@ -33,14 +33,14 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   cellRenderer = (e: GridCellProps) => {
     const { columns, rows, swapItems } = this.props;
 
-    var g: any = e.parent;
-    if (g.getOffsetForCell) {
-      var o = g.getOffsetForCell({
-        columnIndex: e.columnIndex,
-        rowIndex: e.rowIndex
-      });
-      console.log(o);
-    }
+    // var g: any = e.parent;
+    // if (g.getOffsetForCell) {
+    //   var o = g.getOffsetForCell({
+    //     columnIndex: e.columnIndex,
+    //     rowIndex: e.rowIndex
+    //   });
+    //   console.log(o);
+    // }
 
     if (e.rowIndex < columns.length) {
       let column: any;
@@ -127,7 +127,7 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
         <MultiGrid
           cellRangeRenderer={this.cellRangeRenderer}
           cellRenderer={this.cellRenderer}
-          height={window.innerHeight - 25}
+          height={window.innerHeight - 35}
           width={window.innerWidth}
           rowHeight={20}
           columnWidth={({ index }) => 200}

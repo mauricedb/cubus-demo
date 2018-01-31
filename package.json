@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "3",
+    "create-react-class": "^15.6.3",
     "react": "^16.2.0",
+    "react-bootstrap": "^0.32.1",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
     "react-dnd-multi-backend": "^3.1.0",
     "react-dnd-touch-backend": "^0.3.20",
     "react-dom": "^16.2.0",
     "react-scripts-ts": "2.8.0",
+    "react-tappable": "^1.0.2",
     "react-virtualized": "^9.13.0"
   },
   "scripts": {
