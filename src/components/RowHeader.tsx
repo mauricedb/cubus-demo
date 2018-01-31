@@ -6,6 +6,8 @@ import "react-contexify/dist/ReactContexify.min.css";
 
 import { Modal, Button } from "react-bootstrap";
 
+import AppState from "../AppState";
+
 import {
   ConnectDragSource,
   DragSource,
@@ -35,6 +37,7 @@ interface RowHeaderProps {
   dimension: any;
   row: any;
   clientOffset: any;
+  appState: AppState;
 }
 
 interface RowHeaderState {
@@ -95,29 +98,35 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
     });
   }
 
-  onClick = e => {
-    console.log("Click");
-  };
+  // onClick = e => {
+  //   console.log("Click");
+  // };
 
-  onContextMenu = e => {
-    console.log("onContextMenu");
-    e.preventDefault();
-    this.showContextMenu();
-  };
+  // onContextMenu = e => {
+  //   console.log("onContextMenu");
+  //   e.preventDefault();
+  //   this.showContextMenu();
+  // };
 
-  onPress = e => {
-    console.log("onPress");
-    this.showContextMenu();
-  };
+  // onPress = e => {
+  //   console.log("onPress");
+  //   this.showContextMenu();
+  // };
 
   onTap = e => {
-    console.log("onTap");
-    if (e.button === 2) {
-      // e.preventDefault()
-      this.showContextMenu();
-    } else {
+    const { appState } = this.props;
+
+    if (appState === AppState.default) {
       this.showMemberSelect();
+    } else if (appState === AppState.design) {
+      this.showContextMenu();
     }
+
+    console.log("onTap");
+    // if (e.button === 2) {
+    //   // e.preventDefault()
+    // } else {
+    // }
   };
 
   componentDidMount() {
@@ -137,6 +146,7 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
       isOver,
       connectDropTarget,
       clientOffset
+      // appState
       // dimension,
       // row
     } = this.props;
@@ -165,6 +175,8 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
       }
     }
 
+    console.log(showContextMenu)
+
     return connectDropTarget(
       connectDragSource(
         <div
@@ -172,12 +184,10 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
           className={classes.join(" ")}
           style={style}
           // onContextMenu={this.onContextMenu}
-          onClick={this.onClick}
-          onContextMenu={this.onContextMenu}
+          // onClick={this.onClick}
+          // onContextMenu={this.onContextMenu}
         >
-          <Tappable onPress={this.onPress} onTap={this.onTap}>
-            {caption}
-          </Tappable>
+          <Tappable onTap={this.onTap}>{caption}</Tappable>
 
           {showContextMenu && <MyAwesomeMenu />}
 

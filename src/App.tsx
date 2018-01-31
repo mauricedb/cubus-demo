@@ -12,6 +12,7 @@ import { ContextMenuProvider } from "react-contexify";
 import NumberGrid from "./components/NumberGrid";
 // import Tree from './components/Tree';
 import Offspread from "./components/Offspread";
+import AppStateSwitch from "./components/AppStateSwitch";
 
 // const  data = require('./stocks.json');
 // const treeData = require('./tree.json');
@@ -20,6 +21,8 @@ import Offspread from "./components/Offspread";
 //   enableMouseEvents: true,
 //   enableTouchEvents: true
 // });
+
+import AppState from "./AppState";
 
 const touchBackend = MultiBackend(HTML5toTouch);
 
@@ -66,7 +69,8 @@ class App extends React.Component<{}, {}> {
   state = {
     dimensions: originalDimensions,
     rows: [originalDimensions[0], originalDimensions[1]],
-    columns: [originalDimensions[2], originalDimensions[3]]
+    columns: [originalDimensions[2], originalDimensions[3]],
+    appState: AppState.default
   };
 
   swapColumns = (dragging, dropped, before) => {
@@ -161,7 +165,7 @@ class App extends React.Component<{}, {}> {
       .then(data => this.setState({ treeData: data }));
   }
   render() {
-    const { dimensions, rows, columns } = this.state;
+    const { dimensions, rows, columns, appState } = this.state;
     const offspread = dimensions.filter(
       d => rows.indexOf(d) === -1 && columns.indexOf(d) === -1
     );
@@ -181,19 +185,22 @@ class App extends React.Component<{}, {}> {
 
     return (
       <div className="App">
+        <AppStateSwitch appState={appState} setAppState={appState => this.setState({appState})} />
         {/* <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Click me
         </button> */}
         {/* <SimpleGrid data={data} /> */}
         {/* <FastGrid data={data} /> */}
-        <DragDropContextProvider backend={touchBackend}>
+        <DragDropContextProvider backend={touchBackend} >
           <div>
-            <ContextMenuProvider id="menu_id">
+            <ContextMenuProvider id="menu_id" event="onClick">
               <Offspread
+                appState={appState}
                 dimensions={offspread}
                 swapOffspread={this.swapOffspread}
               />
               <NumberGrid
+                appState={appState}
                 rows={rowMembers}
                 columns={columnsMembers}
                 swapItems={this.swapItems}

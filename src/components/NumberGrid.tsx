@@ -7,10 +7,13 @@ import {
 import ColumnHeader from "./ColumnHeader";
 import RowHeader from "./RowHeader";
 
+import AppState from "../AppState";
+
 interface FastGridProps {
   rows: any[];
   columns: any[];
   swapItems: Function;
+  appState: AppState;
 }
 
 interface FastGridState {}
@@ -31,16 +34,7 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
   };
 
   cellRenderer = (e: GridCellProps) => {
-    const { columns, rows, swapItems } = this.props;
-
-    // var g: any = e.parent;
-    // if (g.getOffsetForCell) {
-    //   var o = g.getOffsetForCell({
-    //     columnIndex: e.columnIndex,
-    //     rowIndex: e.rowIndex
-    //   });
-    //   console.log(o);
-    // }
+    const { columns, rows, swapItems, appState } = this.props;
 
     if (e.rowIndex < columns.length) {
       let column: any;
@@ -99,6 +93,7 @@ class NumberGrid extends React.PureComponent<FastGridProps, FastGridState> {
         <RowHeader
           key={e.key}
           style={e.style}
+          appState={appState}
           caption={rowName}
           swapMember={swapItems}
           dimension={row.dimension}

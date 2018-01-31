@@ -17,3 +17,7 @@
   user-select: none;
   -o-user-select: none;
 }
+
+.design-mode {
+  background-color: aqua;
+}

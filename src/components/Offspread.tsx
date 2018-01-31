@@ -7,6 +7,8 @@ import {
   DropTargetSpec
 } from "react-dnd";
 
+import AppState from "../AppState";
+
 import OffspreadItem from "./OffspreadItem";
 import "./Offspread.css";
 
@@ -15,17 +17,23 @@ interface OffspreadProps {
   swapOffspread: Function;
   connectDropTarget: Function;
   isOver: boolean;
+  appState: AppState;
 }
 
 class Offspread extends React.Component<OffspreadProps, {}> {
   render() {
-    const { dimensions, swapOffspread, isOver } = this.props;
+    const { dimensions, swapOffspread, isOver, appState } = this.props;
     const { connectDropTarget } = this.props;
 
     const classes = ["offspreads"];
     if (isOver) {
       classes.push("is-over");
     }
+
+    if (appState === AppState.design) {
+      classes.push("design-mode");
+    }
+
     return connectDropTarget(
       <div className={classes.join(" ")}>
         {dimensions.map(d => (
