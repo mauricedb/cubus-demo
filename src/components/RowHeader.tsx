@@ -1,5 +1,5 @@
 import * as React from "react";
-import Tappable from "react-tappable";
+// import Tappable from "react-tappable";
 
 import { Modal, Button } from "react-bootstrap";
 
@@ -49,23 +49,32 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   };
 
   showContextMenu() {
-    this.setState({showModal: true});
+    this.setState({ showModal: true });
   }
 
   handleHide = () => {
-    this.setState({showModal: false});
-  }
+    this.setState({ showModal: false });
+  };
 
-  
   showMemberSelect() {}
 
+  onClick = e => {
+    console.log("Click");
+  };
+
+  onContextMenu = e => {
+    e.preventDefault();
+    this.showContextMenu();
+  };
+
   onPress = e => {
-    console.log('onPress')
+    console.log("onPress");
     this.showContextMenu();
   };
 
   onTap = e => {
     if (e.button === 2) {
+      // e.preventDefault()
       this.showContextMenu();
     } else {
       this.showMemberSelect();
@@ -78,9 +87,8 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
     img.onload = () => this.props.connectDragPreview(img);
   }
 
-
   render() {
-    const {showModal} = this.state;
+    const { showModal } = this.state;
 
     const {
       caption,
@@ -124,12 +132,19 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
           ref={el => (this.el = el)}
           className={classes.join(" ")}
           style={style}
+          // onContextMenu={this.onContextMenu}
+          onClick={this.onClick}
+          onContextMenu={this.onContextMenu}
         >
-          <Tappable onPress={this.onPress} onTap={this.onTap}>
+          {/* <Tappable
+            // onPress={this.onPress}
+            // onTap={this.onTap}
+           
+          > */}
             {caption}
-          </Tappable>
+          {/* </Tappable> */}
 
-          <Modal show={showModal} onHide={this.handleHide}  animation={false}>
+          <Modal show={showModal} onHide={this.handleHide} animation={false}>
             <Modal.Header>
               <Modal.Title>Modal title</Modal.Title>
             </Modal.Header>
