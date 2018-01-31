@@ -34,7 +34,10 @@ interface RowHeaderProps {
   clientOffset: any;
 }
 
-interface RowHeaderState {}
+interface RowHeaderState {
+  showModal: boolean;
+  text: string;
+}
 
 class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   el: HTMLElement | null = null;
@@ -46,19 +49,29 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
     isBottom: false,
     isCenter: false,
     showModal: false,
-    text: ''
+    text: ""
   };
 
   showContextMenu() {
-    this.setState({ showModal: true, text:'showContextMenu' });
+    this.setState(oldState => {
+      if (oldState.showModal) {
+        return oldState;
+      }
+      return { showModal: true, text: "showContextMenu" };
+    });
   }
 
   handleHide = () => {
-    this.setState({ showModal: false });
+    this.setState({ showModal: false, text: "" });
   };
 
   showMemberSelect() {
-    this.setState({ showModal: true, text:'showMemberSelect' });
+    this.setState(oldState => {
+      if (oldState.showModal) {
+        return oldState;
+      }
+      return { showModal: true, text: "showMemberSelect" };
+    });
   }
 
   onClick = e => {
@@ -66,7 +79,7 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   };
 
   onContextMenu = e => {
-    console.log('onContextMenu')
+    console.log("onContextMenu");
     e.preventDefault();
     this.showContextMenu();
   };
@@ -77,7 +90,7 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   };
 
   onTap = e => {
-    console.log('onTap')
+    console.log("onTap");
     if (e.button === 2) {
       // e.preventDefault()
       this.showContextMenu();
@@ -140,24 +153,22 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
           // onContextMenu={this.onContextMenu}
           onClick={this.onClick}
           onContextMenu={this.onContextMenu}
-          >
-          <Tappable
-            onPress={this.onPress}
-            onTap={this.onTap}
-          >
+        >
+          <Tappable onPress={this.onPress} onTap={this.onTap}>
             {caption}
           </Tappable>
 
           <Modal show={showModal} onHide={this.handleHide} animation={false}>
             <Modal.Header>
-              <Modal.Title>Modal title</Modal.Title>
+              <Modal.Title>Member information</Modal.Title>
             </Modal.Header>
 
-            <Modal.Body>{text}</Modal.Body>
+            <Modal.Body>
+              <div>{text} for {caption}</div>
+            </Modal.Body>
 
             <Modal.Footer>
-              <Button>Close</Button>
-              <Button bsStyle="primary">Save changes</Button>
+              <Button onClick={this.handleHide}>Close</Button>
             </Modal.Footer>
           </Modal>
         </div>
