@@ -1,5 +1,5 @@
 import * as React from "react";
-// import Tappable from "react-tappable";
+import Tappable from "react-tappable";
 
 import { Modal, Button } from "react-bootstrap";
 
@@ -63,6 +63,7 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   };
 
   onContextMenu = e => {
+    console.log('onContextMenu')
     e.preventDefault();
     this.showContextMenu();
   };
@@ -73,6 +74,7 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
   };
 
   onTap = e => {
+    console.log('onTap')
     if (e.button === 2) {
       // e.preventDefault()
       this.showContextMenu();
@@ -135,14 +137,13 @@ class RowHeader extends React.PureComponent<RowHeaderProps, RowHeaderState> {
           // onContextMenu={this.onContextMenu}
           onClick={this.onClick}
           onContextMenu={this.onContextMenu}
-        >
-          {/* <Tappable
-            // onPress={this.onPress}
-            // onTap={this.onTap}
-           
-          > */}
+          >
+          <Tappable
+            onPress={this.onPress}
+            onTap={this.onTap}
+          >
             {caption}
-          {/* </Tappable> */}
+          </Tappable>
 
           <Modal show={showModal} onHide={this.handleHide} animation={false}>
             <Modal.Header>

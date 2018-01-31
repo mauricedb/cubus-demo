@@ -179,7 +179,7 @@ class App extends React.Component<{}, {}> {
       );
 
     return (
-      <div className="App container">
+      <div className="App">
         {/* <button onClick={() => this.setState({ count: this.state.count + 1 })}>
           Click me
         </button> */}
