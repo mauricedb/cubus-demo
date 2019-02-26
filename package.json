@@ -7,13 +7,13 @@
     "create-react-class": "^15.6.3",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
-    "react-contexify": "^2.1.4",
-    "react-dnd": "^2.5.4",
-    "react-dnd-html5-backend": "^2.5.4",
+    "react-contexify": "^4.0.2",
+    "react-dnd": "^7.0.2",
+    "react-dnd-html5-backend": "^7.0.2",
     "react-dnd-multi-backend": "^3.1.0",
-    "react-dnd-touch-backend": "^0.3.20",
+    "react-dnd-touch-backend": "^0.8.0",
     "react-dom": "^16.2.0",
-    "react-scripts-ts": "2.8.0",
+    "react-scripts-ts": "3.1.0",
     "react-tappable": "^1.0.2",
     "react-virtualized": "^9.13.0"
   },
@@ -24,8 +24,8 @@
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
-    "@types/jest": "^21.1.8",
-    "@types/node": "^8.0.58",
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.9.5",
     "@types/react": "^16.0.29",
     "@types/react-dom": "^16.0.3",
     "@types/react-virtualized": "^9.7.9"
